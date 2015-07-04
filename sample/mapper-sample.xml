@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	SYSTEM "mapper-prototype.dtd">
+
+<mapper namespace="afgm.seo.test">
+	<resultMap type="team.afgm.bean.Person" id="personMap">
+		<result column="name" field="name"/>
+		<result column="age" field="age"/>
+		<result column="tel" field="tel"/>
+	</resultMap>
+
+	<select id="testSelect" resultMap="personMap">
+		SELECT ?name ?age ?tel
+		WHERE {
+			?x 	a	hc:Person;
+				hc:name	?name;
+				hc:age	?age;
+				hc:tel	?tel.
+			FILTER( ?age > 19)
+		}
+	</select>
+</mapper>	
+	
