@@ -19,5 +19,13 @@
 			FILTER( ?age > 19)
 		}
 	</select>
+	
+	<select id="testSelect2" resultMap="String">
+		SELECT ?name
+		WHERE {
+			?x 	a 		hc:Person;
+				hc:name	?name.
+		}
+	</select>
 </mapper>	
 	
