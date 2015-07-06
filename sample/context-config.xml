@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<endpoints>
+		<endpoint type="file">
+			<property name="path">sample/test.rdf</property>			
+		</endpoint>
+		
+		<endpoint type="url" default="true">
+			<property name="path">http://ko.dbpedia.org/sparql</property>
+		</endpoint>
+	</endpoints>
+	
+	<namespaces>
+		<namespace prefix="hc" url="http://sample.com#"/>
+		<namespace prefix="foaf" url="ttp://xmlns.com/foaf/0.1/"/>
+	</namespaces>
+	
+	<mappers>
+		<mapper resource="team/afgm/rdfom/test-sample1.xml"/>
+		<mapper resource="team/afgm/rdfom/test-sample2.xml"/>
+	</mappers>
+</configuration>
