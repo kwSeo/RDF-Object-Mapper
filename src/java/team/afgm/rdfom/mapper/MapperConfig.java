@@ -10,5 +10,10 @@ import java.util.List;
 public interface MapperConfig {
 	public Select getSelect(String id);
 	public List<Select> getSelectList();
-	public List<ResultMap> getResultTypeList();
+	public ResultMap getResultMap(String id);
+	public List<ResultMap> getResultMapList();
+	public void setSelect(Select select);
+	public void setSelectList(List<Select> list);
+	public void setResultTypeList(List<ResultMap> resultTypeList);
+	
 }

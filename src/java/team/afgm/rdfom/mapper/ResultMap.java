@@ -6,5 +6,15 @@ package team.afgm.rdfom.mapper;
  *
  */
 public class ResultMap {
+	private String id;
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
 }
