@@ -17,7 +17,10 @@ public class MapperConfigFactory {
 		return factory;
 	}
 	
-	public MapperConfig newMapperConfig(){
-		return new MapperConfigImpl();
+	public MapperConfig createMapperConfig(String namespace, String mapperPath){
+		return new MapperConfigImpl(
+				namespace,
+				SelectFactory.getInstance().createSelectsByXML(mapperPath),
+				ResultMapFactory.getInstance().createResultMapsByXML(mapperPath));
 	}
 }

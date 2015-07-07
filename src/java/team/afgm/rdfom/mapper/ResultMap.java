@@ -1,20 +1,17 @@
 package team.afgm.rdfom.mapper;
 
+import java.util.List;
+
 /**
  * 
  * @author kwSeo
  *
  */
-public class ResultMap {
-	private String id;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	
+public interface ResultMap {
+	public String getId();
+	public String getType();
+	public List<Result> getResults();
+	public void setId(String id);
+	public void setType(String type);
+	public void setResults(List<Result> results);
 }

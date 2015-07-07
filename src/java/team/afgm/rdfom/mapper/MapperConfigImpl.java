@@ -10,6 +10,7 @@ import team.afgm.rdfom.mapper.exception.NotFoundIdException;
  *
  */
 public class MapperConfigImpl implements MapperConfig{
+	private String namespace;
 	private List<Select> selectList;
 	private List<ResultMap> resultMapList;
 	
@@ -17,6 +18,23 @@ public class MapperConfigImpl implements MapperConfig{
 	
 	}
 	
+	public MapperConfigImpl(String namespace, List<Select> selectList, List<ResultMap> resultMapList){
+		this.namespace = namespace;
+		this.selectList = selectList;
+		this.resultMapList = resultMapList;
+	}
+	
+	
+	@Override
+	public String getNamesapce() {
+		return this.namespace;
+	}
+
+	@Override
+	public void setNamesapce(String namespace) {
+		this.namespace = namespace;
+	}
+
 	@Override
 	public Select getSelect(String id) {
 		for(Select select : selectList){
@@ -63,7 +81,7 @@ public class MapperConfigImpl implements MapperConfig{
 	}
 
 	@Override
-	public void setResultTypeList(List<ResultMap> resultTypeList) {
+	public void setResultMapList(List<ResultMap> resultTypeList) {
 		this.resultMapList = resultTypeList;
 	}
 	

@@ -1,5 +1,6 @@
-# RDF-Object-Mapper
-RDF(SPARQL) to Object Mapping Library
+#RDF-Object-Mapper
+##RDF(SPARQL) to Object Mapping Library
 
-jhMoon
-kwSeo
+###Students Team AFGM
+ - jhMoon
+ - kwSeo
