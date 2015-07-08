@@ -19,8 +19,6 @@ public class XmlTest {
 	public void xmlManagerTest(){
 		assertEquals("testSelect", manager.getString("//select/@id"));
 		assertEquals("name", manager.getString("//resultMap/result[1]/@field"));	//XPath는 1부터 시작한다. 즉 첫번째노드는 0이 아닌 1이다.
-		/*
-		 * 지금 정의된 XML에는 문자열 값만이 존재한다.
-		 */
+		assertEquals(new Integer(2), manager.getInteger("count(//select)"));
 	}
 }
