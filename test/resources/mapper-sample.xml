@@ -9,7 +9,7 @@
 		<result column="tel" field="tel"/>
 	</resultMap>
 
-	<select id="testSelect" resultType="personMap">
+	<select id="testSelect" resultMap="personMap">
 		SELECT ?name ?age ?tel
 		WHERE {
 			?x 	a	hc:Person;
@@ -20,7 +20,7 @@
 		}
 	</select>
 	
-	<select id="testSelect2" resultType="String">
+	<select id="testSelect2" resultMap="String">
 		SELECT ?name
 		WHERE {
 			?x 	a 		hc:Person;
