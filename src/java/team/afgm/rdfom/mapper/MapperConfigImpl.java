@@ -2,8 +2,6 @@ package team.afgm.rdfom.mapper;
 
 import java.util.List;
 
-import team.afgm.rdfom.mapper.exception.NotFoundIdException;
-
 /**
  * 
  * @author kwSeo

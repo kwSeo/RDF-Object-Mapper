@@ -1,4 +1,4 @@
-package team.afgm.rdfom.test;
+package team.afgm.rdfom.mapper.test;
 
 import static org.junit.Assert.*;
 
