@@ -45,6 +45,8 @@ import java.util.Map;
  *
  */
 public interface SparqlStatement {
+	public void addNamespace(Namespace namespace);
+	
 	public <T> void setValue(T value);
 	
 	public void setValue(Map<String, ?> map);

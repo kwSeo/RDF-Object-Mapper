@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import team.afgm.rdfom.sparql.SparqlStatement;
 import team.afgm.rdfom.sparql.SparqlStatementImpl.SparqlStatementBuilder;
 
 public class SparqlStatementTest {
@@ -31,5 +30,25 @@ public class SparqlStatementTest {
 		stmt = SparqlStatementBuilder.newInstance(query);
 		stmt.setValue(new Person());
 		assertEquals("SELECT ?name WHERE { ?x a hc:Person; hc:age 25; hc:tel \"010-1111-1111\"; hc:name ?name. }", stmt.getQuery());
+		
+		stmt = SparqlStatementBuilder.newInstance(query);
+		Person person = new Person();
+		Namespace namespace = new Namespace(){
+
+			@Override
+			public String getName() {
+				return "hc";
+			}
+
+			@Override
+			public String getUrl() {
+				// TODO Auto-generated method stub
+				return "http://www.test.co.kr#";
+			}
+		};
+		stmt.addNamespace(namespace);
+		stmt.setValue(person);
+		System.out.println(stmt.getQuery());
+		
 	}
 }

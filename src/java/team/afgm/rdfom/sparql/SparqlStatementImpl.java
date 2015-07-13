@@ -2,6 +2,8 @@ package team.afgm.rdfom.sparql;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import team.afgm.rdfom.util.StringUtil;
@@ -21,7 +23,7 @@ public class SparqlStatementImpl implements SparqlStatement{
 	public static class SparqlStatementBuilder{
 		public static SparqlStatement newInstance(String sparqlQuery){
 			return new SparqlStatementImpl(sparqlQuery);
-		}
+		}		
 	}
 	
 	/**
@@ -30,6 +32,7 @@ public class SparqlStatementImpl implements SparqlStatement{
 	 */
 	private String originalQuery;
 	private String query;
+	private List<Namespace> namespaces;
 	
 	/**
 	 * private으로 선언되 외부에서 new 키워드로는 생성 불가
@@ -38,6 +41,7 @@ public class SparqlStatementImpl implements SparqlStatement{
 	 */
 	private SparqlStatementImpl(String sparqlQuery){
 		this.originalQuery = query = sparqlQuery;
+		this.namespaces = new ArrayList<>();
 	}
 	
 	/**
@@ -100,11 +104,26 @@ public class SparqlStatementImpl implements SparqlStatement{
 	
 	@Override
 	public String getQuery() {
-		return this.query;
+		StringBuilder queryBuilder = new StringBuilder();
+		for(Namespace namespace : namespaces){
+			String prefixName = namespace.getName();
+			String url = namespace.getUrl();
+			queryBuilder.append("PREFIX ")
+				.append(prefixName).append(": <")
+				.append(url).append(">\n");			//\n은 없어도 되지 않을까...
+		}
+		
+		queryBuilder.append(query);
+		return queryBuilder.toString();
 	}
 	
 	public String getOriginalQuery(){
 		return this.originalQuery;
 	}
-	
+
+	@Override
+	public void addNamespace(Namespace namespace) {
+		this.namespaces.add(namespace);
+	}
+
 }
