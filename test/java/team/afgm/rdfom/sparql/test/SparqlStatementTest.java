@@ -1,4 +1,4 @@
-package team.afgm.rdfom.sparql;
+package team.afgm.rdfom.sparql.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import team.afgm.rdfom.sparql.Namespace;
+import team.afgm.rdfom.sparql.SparqlStatement;
 import team.afgm.rdfom.sparql.SparqlStatementImpl.SparqlStatementBuilder;
 
 public class SparqlStatementTest {
