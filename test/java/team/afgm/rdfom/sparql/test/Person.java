@@ -1,4 +1,4 @@
-package team.afgm.rdfom.sparql;
+package team.afgm.rdfom.sparql.test;
 
 public class Person{
 	private String tel = "010-1111-1111";
