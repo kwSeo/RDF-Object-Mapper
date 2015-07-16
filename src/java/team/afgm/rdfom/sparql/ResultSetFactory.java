@@ -2,6 +2,7 @@ package team.afgm.rdfom.sparql;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -23,6 +24,14 @@ public class ResultSetFactory {
 	
 	public ResultSet createJAXBResultSet(JAXBData data){
 		ResultSetImpl resultSet = new ResultSetImpl();
+		
+		List<Variable> variables = data.getHead().getVariable();
+		List<String> columnNames = new ArrayList<>();
+		for(Variable variable : variables){
+			columnNames.add(variable.getName());
+		}
+		
+		resultSet.setColumnNames(columnNames);
 		
 		List<Result> results = data.getResults().getResult();
 		for(Result result : results){

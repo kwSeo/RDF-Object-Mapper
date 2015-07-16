@@ -1,5 +1,6 @@
 package team.afgm.rdfom.mapper;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,13 +14,14 @@ public class MapperConfigImpl implements MapperConfig{
 	private List<ResultMap> resultMapList;
 	
 	public MapperConfigImpl(){
-	
 	}
 	
 	public MapperConfigImpl(String namespace, List<Select> selectList, List<ResultMap> resultMapList){
 		this.namespace = namespace;
 		this.selectList = selectList;
+		Collections.sort(this.selectList);
 		this.resultMapList = resultMapList;
+		Collections.sort(this.selectList);
 	}
 	
 	
@@ -34,28 +36,19 @@ public class MapperConfigImpl implements MapperConfig{
 	}
 
 	@Override
-	public Select getSelect(String id) {
-		for(Select select : selectList){
-			if(select.getId().equals(id)){
-				return select;
-			}
-		}
-		
-		//if not found, return null
-		return null;
+	public Select findSelect(String id) {
+		Select select = SelectFactory.getInstance().createDefaultSelect();
+		select.setId(id);
+		int index = Collections.binarySearch(selectList, select);
+		return selectList.get(index);
 	}
 	
-	
-
 	@Override
-	public ResultMap getResultMap(String id) {
-		for(ResultMap resultMap : resultMapList){
-			if(resultMap.getId().equals(id))
-				return resultMap;
-		}
-
-		//if not found, return null
-		return null;
+	public ResultMap findResultMap(String id) {
+		ResultMap resultMap = ResultMapFactory.getInstance().createDefaultResultMap();
+		resultMap.setId(id);
+		int index = Collections.binarySearch(resultMapList, resultMap);
+		return resultMapList.get(index);
 	}
 
 	@Override

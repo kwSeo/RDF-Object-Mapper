@@ -16,18 +16,25 @@ public class SelectImpl implements Select{
 		this.query = query;
 	}
 	
+	@Override
 	public String getId(){
 		return id;
 	}
 	
+	@Override
 	public String getResultType(){
 		return resultType;
 	}
 	
+	@Override
 	public String getQuery(){
 		return query;
 	}
 
+	public void setId(String id){
+		this.id = id;
+	}
+	
 	@Override
 	public void setResultType(String resultType) {
 		this.resultType = resultType;
@@ -36,6 +43,11 @@ public class SelectImpl implements Select{
 	@Override
 	public void setQuery(String query) {
 		this.query = query;
+	}
+
+	@Override
+	public int compareTo(Select o) {
+		return this.id.compareTo(o.getId());
 	}
 	
 	

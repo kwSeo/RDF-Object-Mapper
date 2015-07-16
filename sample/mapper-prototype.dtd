@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT mapper (resultType*, select*)>
+<!ELEMENT mapper (resultMap*, select*)>
 	<!ATTLIST mapper namespace CDATA "default">
 	
-	<!ELEMENT resultType (result+)>
-		<!ATTLIST resultType id CDATA #REQUIRED>
-		<!ATTLIST resultType type CDATA #REQUIRED>
+	<!ELEMENT resultMap (result+)>
+		<!ATTLIST resultMap id CDATA #REQUIRED>
+		<!ATTLIST resultMap type CDATA #REQUIRED>
 		
 		<!ELEMENT result EMPTY> 
 			<!ATTLIST result column CDATA #REQUIRED>
