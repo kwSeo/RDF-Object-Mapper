@@ -16,6 +16,9 @@ public class ResultMapFactory {
 		return factory;
 	}
 	
+	public ResultMap createDefaultResultMap(){
+		return new ResultMapImpl();
+	}
 	
 	public List<ResultMap> createResultMapsByXML(String mapperPath){
 		List<ResultMap> list = new ArrayList<>();

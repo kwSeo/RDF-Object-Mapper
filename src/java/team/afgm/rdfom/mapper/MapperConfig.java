@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface MapperConfig {
 	public String getNamesapce();
-	public Select getSelect(String id);
+	public Select findSelect(String id);
 	public List<Select> getSelectList();
-	public ResultMap getResultMap(String id);
+	public ResultMap findResultMap(String id);
 	public List<ResultMap> getResultMapList();
 	public void setNamesapce(String namespace);
 	public void setSelect(Select select);

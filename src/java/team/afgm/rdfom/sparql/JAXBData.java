@@ -103,11 +103,13 @@ class Result{
 
 
 @XmlRootElement(name="binding")
-@XmlType(propOrder={"uri", "bnode"})
+@XmlType(propOrder={"uri", "bnode", "literal"})
 class Binding{
 	private String uri="";
 	private String bnode="";
 	private String name="";
+	private String literal = "";
+	
 	private String type="";
 	
 	@XmlElement(name="uri")
@@ -120,6 +122,12 @@ class Binding{
 	public void setBnode(String bnode){
 		this.bnode = bnode;
 		this.type = "bnode";
+	}
+
+	@XmlElement(name="literal")
+	public void setLiteral(String literal){
+		this.literal = literal;
+		this.type = "literal";
 	}
 	
 	@XmlAttribute(name="name")
@@ -143,14 +151,20 @@ class Binding{
 		return type;
 	}
 	
+	public String getLiteral(){
+		return this.literal;
+	}
+	
 	public String getValue(){
 		switch(type){
 		case "uri":
 			return getUri();
 		case "bnode":
 			return getBnode();
+		case "literal":
+			return getLiteral();
 		default:
-			return "invalid";
+			throw new RuntimeException("Error JAXBData getValue.");
 		}
 	}
 	

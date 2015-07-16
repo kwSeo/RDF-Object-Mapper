@@ -7,7 +7,7 @@ import java.util.List;
  * @author kwSeo
  *
  */
-public interface ResultMap {
+public interface ResultMap extends Comparable<ResultMap> {
 	public String getId();
 	public String getType();
 	public List<Result> getResults();

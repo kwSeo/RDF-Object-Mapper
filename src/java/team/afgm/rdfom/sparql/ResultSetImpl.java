@@ -5,10 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlElementDecl;
+
 
 public class ResultSetImpl implements ResultSet{
+	private List<String> columnNames = new ArrayList<>();
 	private List<Row> rows = new ArrayList<>();
 	private int index = -1;
+	
+	public void setColumnNames(List<String> columnNames){
+		this.columnNames = columnNames;
+	}
 	
 	public void addRow(Row row){
 		rows.add(row);
@@ -49,34 +56,35 @@ public class ResultSetImpl implements ResultSet{
 
 	@Override
 	public void first() {
-		// TODO Auto-generated method stub
+		this.index = 1;
+	}
+
+	@Deprecated
+	@Override
+	public void last() {
 		
 	}
 
 	@Override
-	public void last() {
-		// TODO Auto-generated method stub
-		
+	public void beforeFirst(){
+		this.index = -1;
 	}
-
+	
 	@Override
 	public void numOfRows() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	
-}
-
-
-class Row{
-	private Map<String, Object> map = new HashMap<>();
-	
-	public String getStringValue(String name){
-		return String.valueOf(map.get(name));
+	@Override
+	public String getColumn(int index) {
+		return columnNames.get(index);
 	}
-	
-	public void setValue(String columnName, Object value){
-		map.put(columnName, value);
+
+	@Override
+	public List<String> getColumns() {
+		return columnNames;
 	}
+
+	
 }

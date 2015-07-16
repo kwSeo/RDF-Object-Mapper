@@ -36,11 +36,13 @@ public class FileEndpointTest {
 				+ "PREFIX vcard: <http://www.w3.org/2001/vcard-rdf/3.0#> "
 				+ "SELECT distinct ?x ?o "
 				+ "WHERE { "
-				+ "?x vcard:N ?o. "
+				+ "?x vcard:N ?a. "
+				+ "?a vcard:Family ?o. "
 				+ "} LIMIT 10";
 		Document doc = pro.executeSelect(query);
 		String output = pro.executeSelectToString(query);
-
+		System.out.println(output);
+		
 //		Document 객체가 지니고 있는 XML을 문자열로 변환하는 코드 
 //		TransformerFactory tf = TransformerFactory.newInstance();
 //		Transformer tr = tf.newTransformer();
@@ -69,7 +71,7 @@ public class FileEndpointTest {
 				"http://somewhere/MattJones/", 
 				"http://somewhere/SarahJones/",
 				"http://somewhere/JohnSmith/"};
-		String[] oArr = {"b0", "b1", "b2", "b3"};
+		String[] oArr = {"Smith", "Jones", "Jones", "Smith"};
 		
 		List<String> xArrTest = new ArrayList<>();
 		List<String> oArrTest = new ArrayList<>();
