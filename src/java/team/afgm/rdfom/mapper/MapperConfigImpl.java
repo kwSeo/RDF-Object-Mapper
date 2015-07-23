@@ -1,7 +1,6 @@
 package team.afgm.rdfom.mapper;
 
-import java.util.Collections;
-import java.util.List;
+import team.afgm.util.collection.SearchList;
 
 /**
  * 
@@ -10,18 +9,16 @@ import java.util.List;
  */
 public class MapperConfigImpl implements MapperConfig{
 	private String namespace;
-	private List<Select> selectList;
-	private List<ResultMap> resultMapList;
+	private SearchList<Select> selectList;
+	private SearchList<ResultMap> resultMapList;
 	
 	public MapperConfigImpl(){
 	}
 	
-	public MapperConfigImpl(String namespace, List<Select> selectList, List<ResultMap> resultMapList){
+	public MapperConfigImpl(String namespace, SearchList<Select> selectList, SearchList<ResultMap> resultMapList){
 		this.namespace = namespace;
 		this.selectList = selectList;
-		Collections.sort(this.selectList);
 		this.resultMapList = resultMapList;
-		Collections.sort(this.selectList);
 	}
 	
 	
@@ -37,27 +34,36 @@ public class MapperConfigImpl implements MapperConfig{
 
 	@Override
 	public Select findSelect(String id) {
+//BinaryTree로 변경되면서 코드바 바뀌었다. by kwSeo
+//		Select select = SelectFactory.getInstance().createDefaultSelect();
+//		select.setId(id);
+//		int index = Collections.binarySearch(selectList, select);
+		
 		Select select = SelectFactory.getInstance().createDefaultSelect();
 		select.setId(id);
-		int index = Collections.binarySearch(selectList, select);
-		return selectList.get(index);
+		
+		return selectList.search(select);
 	}
 	
 	@Override
 	public ResultMap findResultMap(String id) {
+//BinaryTree로 변경되면서 코드바 바뀌었다. by kwSeo
+//		ResultMap resultMap = ResultMapFactory.getInstance().createDefaultResultMap();
+//		resultMap.setId(id);
+//		int index = Collections.binarySearch(resultMapList, resultMap);
+		
 		ResultMap resultMap = ResultMapFactory.getInstance().createDefaultResultMap();
 		resultMap.setId(id);
-		int index = Collections.binarySearch(resultMapList, resultMap);
-		return resultMapList.get(index);
+		return resultMapList.search(resultMap);
 	}
 
 	@Override
-	public List<Select> getSelectList() {
+	public SearchList<Select> getSelectList() {
 		return selectList;
 	}
 
 	@Override
-	public List<ResultMap> getResultMapList() {
+	public SearchList<ResultMap> getResultMapList() {
 		return resultMapList;
 	}
 
@@ -67,12 +73,12 @@ public class MapperConfigImpl implements MapperConfig{
 	}
 
 	@Override
-	public void setSelectList(List<Select> list){
+	public void setSelectList(SearchList<Select> list){
 		this.selectList = list;
 	}
 
 	@Override
-	public void setResultMapList(List<ResultMap> resultTypeList) {
+	public void setResultMapList(SearchList<ResultMap> resultTypeList) {
 		this.resultMapList = resultTypeList;
 	}
 	

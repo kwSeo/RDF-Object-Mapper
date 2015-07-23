@@ -1,25 +1,64 @@
 package team.afgm.util.collection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
-public class BTree<T extends Comparable<T>> {
-	private int count = 0;
+public class BinaryTreeList<T extends Comparable<T>> implements SearchList<T>{
+	private int size = 0;
 	private Node<T> root = null;
 	
+	@Override
 	public void add(T newValue){
+		
 		//root가 null인 경우
 		if(root == null){
 			root = new Node<T>(newValue);
+			size++;
 			return;
 		}
 		//아닌 경우
 		insert(new Node<T>(newValue), root);
 		
-		count++;
+		size++;
 	}
 	
-	public T get(T value){
+	/**
+	 * 인자로 전달받은 순위의 값을 반환한다.
+	 * @param rankIndex
+	 * 		0부터 시작. 0 = 정렬했을 때 첫번째 값
+	 * @return
+	 */
+	@Override
+	public T get(int rankIndex){
+		if(root == null || rankIndex >= size()){
+			return null;
+		}
+		
+		Node<T> nowNode = null;
+		Node<T> node = root;
+		Stack<Node<T>> stack = new Stack<>();
+		int i=-1;
+		
+		while(i != rankIndex){
+			if(node != null){
+				node = stack.push(node);
+				node = node.getLeft();
+			}else{
+				i++;
+				nowNode = stack.pop();
+				node = nowNode.getRight();
+			}
+		}
+		
+		return nowNode.getValue();
+		
+	}
+	
+	
+	@Override
+	public T search(T value){
 		Node<T> node = find(new Node<T>(value), root);
 		if(node != null)
 			return node.getValue();
@@ -67,6 +106,7 @@ public class BTree<T extends Comparable<T>> {
 		}
 	}
 	
+	@Override
 	public List<T> getSortedValues(){
 		List<T> list = new ArrayList<>();
 		inOrder(root, list);
@@ -80,6 +120,17 @@ public class BTree<T extends Comparable<T>> {
 		inOrder(nowNode.getLeft(), list);
 		list.add(nowNode.getValue());
 		inOrder(nowNode.getRight(), list);
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		Iterator<T> iter = getSortedValues().iterator();
+		return iter;
+	}
+	
+	@Override
+	public int size(){
+		return size;
 	}
 	
 }

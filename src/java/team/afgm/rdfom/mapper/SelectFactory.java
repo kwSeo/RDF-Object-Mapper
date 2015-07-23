@@ -1,9 +1,8 @@
 package team.afgm.rdfom.mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import team.afgm.rdfom.xml.parser.XMLManager;
+import team.afgm.util.collection.BinaryTreeList;
+import team.afgm.util.collection.SearchList;
 
 /**
  * @author kwSeo
@@ -20,8 +19,8 @@ public class SelectFactory {
 		return new SelectImpl();
 	}
 
-	public List<Select> createSelectsByXML(String mapperPath){
-		List<Select> selectList = new ArrayList<>();
+	public SearchList<Select> createSelectsByXML(String mapperPath){
+		SearchList<Select> selectList = new BinaryTreeList<>();
 		
 		XMLManager xml = new XMLManager(mapperPath);
 		int numOfSelect = xml.getInteger("count(//select)");	//select 요소의 수를 반환
@@ -35,7 +34,6 @@ public class SelectFactory {
 			selectList.add(
 					new SelectImpl(id, resultType, query));
 		}
-		
 		return selectList;
 	}
 }

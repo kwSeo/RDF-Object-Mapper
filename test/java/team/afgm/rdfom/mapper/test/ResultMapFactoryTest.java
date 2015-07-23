@@ -1,13 +1,15 @@
 package team.afgm.rdfom.mapper.test;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.util.List;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import team.afgm.rdfom.mapper.Result;
 import team.afgm.rdfom.mapper.ResultMap;
 import team.afgm.rdfom.mapper.ResultMapFactory;
+import team.afgm.util.collection.SearchList;
 
 public class ResultMapFactoryTest {
 	@Test
@@ -19,7 +21,7 @@ public class ResultMapFactoryTest {
 		String[] mapValues = new String[2];
 		
 		ResultMapFactory factory = ResultMapFactory.getInstance();
-		List<ResultMap> resultMaps = factory.createResultMapsByXML("sample/mapper-sample.xml");
+		SearchList<ResultMap> resultMaps = factory.createResultMapsByXML("sample/mapper-sample.xml");
 		
 		for(ResultMap resultMap : resultMaps){	//mapper-sample.xml에는 resultMap이 하나 밖에 없어서 오직 한번만 반복한다.
 			mapValues[0] = resultMap.getType();

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import team.afgm.util.collection.BTree;
+import team.afgm.util.collection.BinaryTreeList;
 
 public class BTreeTest {
 	@Test
 	public void addAndPrintTest(){
-		BTree<TestValue> bTree = new BTree<>();
+		BinaryTreeList<TestValue> bTree = new BinaryTreeList<>();
 		bTree.add(new TestValue(10));
 		bTree.add(new TestValue(20));
 		bTree.add(new TestValue(30));
@@ -25,7 +25,7 @@ public class BTreeTest {
 		System.out.println();
 		
 		TestValue person = new TestValue(30);
-		TestValue findPerson = bTree.get(person);
+		TestValue findPerson = bTree.search(person);
 		System.out.println(findPerson);
 	}
 }
