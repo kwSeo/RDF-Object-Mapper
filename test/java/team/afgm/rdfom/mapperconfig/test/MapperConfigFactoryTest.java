@@ -1,4 +1,4 @@
-package team.afgm.rdfom.mapper.test;
+package team.afgm.rdfom.mapperconfig.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,14 +12,14 @@ import team.afgm.rdfom.mapper.Select;
 public class MapperConfigFactoryTest {
 	@Test
 	public void createTest(){
-		MapperConfig config = MapperConfigFactory.getInstance().createMapperConfig("testingNamespace", "sample/mapper-sample.xml");
+		MapperConfig config = MapperConfigFactory.getInstance().createMapperConfig("sample/mapper-sample.xml");
 
 		assertEquals("testingNamespace", config.getNamesapce());
 	}
 	
 	@Test
 	public void findTest(){
-		MapperConfig config = MapperConfigFactory.getInstance().createMapperConfig("abc", "sample/mapper-sample.xml");
+		MapperConfig config = MapperConfigFactory.getInstance().createMapperConfig("sample/mapper-sample.xml");
 		long start = System.nanoTime();
 		Select select = config.findSelect("testSelect");
 		ResultMap resultMap = config.findResultMap("personMap");

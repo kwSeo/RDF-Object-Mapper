@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import team.afgm.rdfom.context.Namespace;
 import team.afgm.rdfom.util.StringUtil;
 
 /**
@@ -106,7 +107,7 @@ public class SparqlStatementImpl implements SparqlStatement{
 	public String getQuery() {
 		StringBuilder queryBuilder = new StringBuilder();
 		for(Namespace namespace : namespaces){
-			String prefixName = namespace.getName();
+			String prefixName = namespace.getPrefix();
 			String url = namespace.getUrl();
 			queryBuilder.append("PREFIX ")
 				.append(prefixName).append(": <")

@@ -40,7 +40,7 @@ public class FileEndpointTest {
 				+ "?a vcard:Family ?o. "
 				+ "} LIMIT 10";
 		Document doc = pro.executeSelect(query);
-		String output = pro.executeSelectToString(query);
+		String output = pro.executeSelectAsString(query);
 		System.out.println(output);
 		
 //		Document 객체가 지니고 있는 XML을 문자열로 변환하는 코드 

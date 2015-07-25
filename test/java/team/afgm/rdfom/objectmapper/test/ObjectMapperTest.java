@@ -24,7 +24,7 @@ public class ObjectMapperTest {
 				+ "?a vcard:Family ?o. "
 				+ "} LIMIT 10";
 		Document doc = pro.executeSelect(query);
-		String output = pro.executeSelectToString(query);
+		String output = pro.executeSelectAsString(query);
 				
 		ResultSet resultSet = ResultSetFactory.getInstance().createJAXBResultSet(output);
 		

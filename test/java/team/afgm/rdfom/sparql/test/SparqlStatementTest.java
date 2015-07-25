@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import team.afgm.rdfom.sparql.Namespace;
+import team.afgm.rdfom.context.Namespace;
 import team.afgm.rdfom.sparql.SparqlStatement;
 import team.afgm.rdfom.sparql.SparqlStatementImpl.SparqlStatementBuilder;
 
@@ -42,19 +42,22 @@ public class SparqlStatementTest {
 		//아직 ContextConfig 클래스가 완성되지 않아 Namespace부분은 임의로 만든 인터페이스로 테스트하고 있다.
 		stmt = SparqlStatementBuilder.newInstance(query);
 		Person person = new Person();
-		Namespace namespace = new Namespace(){
-
-			@Override
-			public String getName() {
-				return "hc";
-			}
-
-			@Override
-			public String getUrl() {
-				// TODO Auto-generated method stub
-				return "http://www.test.co.kr#";
-			}
-		};
+//		Namespace namespace = new Namespace(){
+//			@Override
+//			public String getFrefix() {
+//				return "hc";
+//			}
+//
+//			@Override
+//			public String getUrl() {
+//				// TODO Auto-generated method stub
+//				return "http://www.test.co.kr#";
+//			}
+//		};
+		Namespace namespace = new Namespace();
+		namespace.setPrefix("hc");
+		namespace.setUrl("http://www.test.co.kr#");
+		
 		stmt.addNamespace(namespace);
 		stmt.setValue(person);
 		System.out.println(stmt.getQuery());

@@ -26,7 +26,7 @@ public class NamespacesFactory {
 		XMLManager xml = new XMLManager(mapperPath);
 		int numOfNamespace = xml.getInteger("count(//namespaces)");
 		
-		for(int i=1; i<numOfNamespace; i++) {
+		for(int i=1; i<=numOfNamespace; i++) {
 			Namespaces namespaces = new NamespacesImpl();
 			String expr = "//namespaces["+i+"]";
 			namespaces.setNamespace(getNamespaecs(xml, i));

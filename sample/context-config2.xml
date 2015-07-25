@@ -21,7 +21,6 @@
 	</namespaces>
 	
 	<mappers>
-		<mapper resource="team/afgm/rdfom/test-sample1.xml"/>
-		<mapper resource="team/afgm/rdfom/test-sample2.xml"/>
+		<mapper resource="sample/mapper-sample2.xml"/>
 	</mappers>
 </configuration>

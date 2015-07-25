@@ -37,12 +37,13 @@ public class EndPointFactory {
 		List<Property> properties = new ArrayList<Property>();
 		String expr = "//endpoints/endpoint["+index+"]/property";
 		int numOfResult = xml.getInteger("count("+expr+")");
-		
-		for(int i=1; i<numOfResult; i++) {
+	
+		for(int i=1; i<=numOfResult; i++) {
 			Property property = new Property();
 			String subExpr = expr+"["+i+"]";
 			property.setName(xml.getString(subExpr+"/@name"));
 			property.setValue(xml.getString(subExpr));
+			
 			properties.add(property);
 		}
 		

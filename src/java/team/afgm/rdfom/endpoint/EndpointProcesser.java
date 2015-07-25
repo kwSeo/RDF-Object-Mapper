@@ -45,5 +45,6 @@ public interface EndpointProcesser {
 	 */
 	public Model executeConstruct(String sparql);
 	
+	public String executeSelectAsString(String sparql);
 	
 }
