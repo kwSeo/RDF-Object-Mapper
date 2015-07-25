@@ -49,7 +49,8 @@ public class FileEndpointProcesser implements EndpointProcesser{
 	 * @param sparql
 	 * @return String
 	 */
-	public String executeSelectToString(String sparql) {
+	@Override
+	public String executeSelectAsString(String sparql) {
 		Query query = QueryFactory.create(sparql);
 
 		try (QueryExecution exec = QueryExecutionFactory.create(query, model)) {
@@ -74,7 +75,7 @@ public class FileEndpointProcesser implements EndpointProcesser{
 	@Override
 	public Document executeSelect(String sparql) {
 		try{
-			String xmlStr = executeSelectToString(sparql);
+			String xmlStr = executeSelectAsString(sparql);
 			return DocumentBuilderFactory.newInstance().newDocumentBuilder()
 					.parse(new InputSource(new StringReader(xmlStr)));
 			

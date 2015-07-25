@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	SYSTEM "mapper-prototype.dtd">
+
+<mapper namespace="afgm.seo.test">
+	<resultMap type="team.afgm.bean.Person" id="personMap">
+		<result column="name" field="name"/>
+		<result column="age" field="age"/>
+		<result column="tel" field="tel"/>
+	</resultMap>
+
+	<select id="testSelect" resultType="Person">
+				SELECT distinct ?x ?o 
+				WHERE { 
+					?x vcard:N ?a. 
+					?a vcard:Family ?o.
+				} LIMIT 10
+	</select>
+	
+	<select id="testSelect2" resultType="String">
+		SELECT ?name
+		WHERE {
+			?x 	a 		hc:Person;
+				hc:name	?name.
+		}
+	</select>
+</mapper>	
+	
