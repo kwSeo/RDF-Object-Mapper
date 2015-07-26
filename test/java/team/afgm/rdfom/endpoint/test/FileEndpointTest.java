@@ -39,7 +39,7 @@ public class FileEndpointTest {
 				+ "?x vcard:N ?a. "
 				+ "?a vcard:Family ?o. "
 				+ "} LIMIT 10";
-		Document doc = pro.executeSelect(query);
+		ResultSet resultSet = pro.executeSelect(query);
 		String output = pro.executeSelectToString(query);
 		System.out.println(output);
 		
@@ -75,7 +75,6 @@ public class FileEndpointTest {
 		
 		List<String> xArrTest = new ArrayList<>();
 		List<String> oArrTest = new ArrayList<>();
-		ResultSet resultSet = ResultSetFactory.getInstance().createJAXBResultSet(output);
 		while(resultSet.next()){
 			xArrTest.add(resultSet.getString("x")); 
 			oArrTest.add(resultSet.getString("o"));

@@ -4,6 +4,8 @@ import org.w3c.dom.Document;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
+import team.afgm.rdfom.sparql.ResultSet;
+
 /**
  * SPARQL 쿼리를 수행하여 알맞은 갑슬 반환한다.
  * SPARQL의 SELECT와 ASK는 반환값에 대한 XML, JSON 등의 포맷표준이 존재한다.
@@ -11,7 +13,7 @@ import com.hp.hpl.jena.rdf.model.Model;
  * @author kwSeo
  *
  */
-public interface EndpointProcesser {
+public abstract class EndpointProcesser {
 	/**
 	 * 파라미터로 전달하는 SPARQL를 통해 쿼리를 실행한다.
 	 * SELECT는 W3C에서 정의한 SPARQL의 결과값의 포맷표준이 존재한다.
@@ -21,7 +23,7 @@ public interface EndpointProcesser {
 	 * @return Document
 	 *   반환되는 값은 org.w3c.dom.Document 객체이다.
 	 */
-	public Document executeSelect(String sparql);
+	public abstract ResultSet executeSelect(String sparql);
 	
 	/**
 	 * 파라미터로 전달하는 SPARQL을 통해 쿼리를 실행한다.
@@ -31,7 +33,7 @@ public interface EndpointProcesser {
 	 * @return boolean
 	 * 	true or false
 	 */
-	public boolean executeAsk(String sparql);
+	public abstract boolean executeAsk(String sparql);
 	
 	/**
 	 * 파라미터로 전달하는 SPARQL을 통해 쿼리를 싱행한다.
@@ -43,7 +45,7 @@ public interface EndpointProcesser {
 	 * @return Model
 	 *   Jena Framework Model
 	 */
-	public Model executeConstruct(String sparql);
+	public abstract Model executeConstruct(String sparql);
 	
 	
 }

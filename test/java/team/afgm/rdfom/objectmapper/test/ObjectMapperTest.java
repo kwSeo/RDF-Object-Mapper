@@ -23,11 +23,8 @@ public class ObjectMapperTest {
 				+ "?x vcard:N ?a. "
 				+ "?a vcard:Family ?o. "
 				+ "} LIMIT 10";
-		Document doc = pro.executeSelect(query);
-		String output = pro.executeSelectToString(query);
+		ResultSet resultSet = pro.executeSelect(query);
 				
-		ResultSet resultSet = ResultSetFactory.getInstance().createJAXBResultSet(output);
-		
 		ObjectMapper mapper = new ObjectMapper();
 		TestBean instance = mapper.readValue(resultSet, TestBean.class);
 		System.out.println(instance.toString());

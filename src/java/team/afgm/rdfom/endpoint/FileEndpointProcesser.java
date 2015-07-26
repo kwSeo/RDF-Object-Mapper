@@ -1,25 +1,20 @@
 package team.afgm.rdfom.endpoint;
 
 import java.io.InputStream;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-
-import team.afgm.rdfom.endpoint.exception.QueryExecutionException;
-import team.afgm.rdfom.endpoint.exception.XMLParserException;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.util.FileManager;
+
+import team.afgm.rdfom.endpoint.exception.QueryExecutionException;
+import team.afgm.rdfom.endpoint.exception.XMLParserException;
+import team.afgm.rdfom.sparql.ResultSet;
+import team.afgm.rdfom.sparql.ResultSetFactory;
 
 /**
  * 사용자가 준비한 RDF 파일로부터 SPARQL 쿼리를 수행한다.
@@ -27,7 +22,7 @@ import com.hp.hpl.jena.util.FileManager;
  * @author kwSeo
  *
  */
-public class FileEndpointProcesser implements EndpointProcesser{
+public class FileEndpointProcesser extends EndpointProcesser{
 	private String path;
 	private Model model;
 
@@ -53,7 +48,7 @@ public class FileEndpointProcesser implements EndpointProcesser{
 		Query query = QueryFactory.create(sparql);
 
 		try (QueryExecution exec = QueryExecutionFactory.create(query, model)) {
-			ResultSet resultSet = exec.execSelect();
+			com.hp.hpl.jena.query.ResultSet resultSet = exec.execSelect();
 			String xmlStr = ResultSetFormatter.asXMLString(resultSet);
 			
 			return xmlStr;
@@ -72,11 +67,10 @@ public class FileEndpointProcesser implements EndpointProcesser{
 	 * @return Document
 	 */
 	@Override
-	public Document executeSelect(String sparql) {
+	public ResultSet executeSelect(String sparql) {
 		try{
 			String xmlStr = executeSelectToString(sparql);
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder()
-					.parse(new InputSource(new StringReader(xmlStr)));
+			return ResultSetFactory.getInstance().createJAXBResultSet(xmlStr);
 			
 		}catch(Exception e){
 			throw new XMLParserException("Error parsing SPARQL result XML.");
