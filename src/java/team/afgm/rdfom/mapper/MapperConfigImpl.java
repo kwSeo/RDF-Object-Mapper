@@ -1,6 +1,8 @@
 package team.afgm.rdfom.mapper;
 
-import team.afgm.util.collection.SearchList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -9,79 +11,59 @@ import team.afgm.util.collection.SearchList;
  */
 public class MapperConfigImpl implements MapperConfig{
 	private String namespace;
-	private SearchList<Select> selectList;
-	private SearchList<ResultMap> resultMapList;
+	private Map<String, ResultMap> resultMaps;
+	private Map<String, Select> selects;
 	
 	public MapperConfigImpl(){
 	}
 	
-	public MapperConfigImpl(String namespace, SearchList<Select> selectList, SearchList<ResultMap> resultMapList){
+	/**
+	 * 
+	 * @param namespace
+	 * @param resultMaps
+	 * @param selects
+	 */
+	public MapperConfigImpl(String namespace, Map<String, ResultMap> resultMaps, Map<String, Select> selects) {
+		super();
 		this.namespace = namespace;
-		this.selectList = selectList;
-		this.resultMapList = resultMapList;
-	}
-	
-	
-	@Override
-	public String getNamesapce() {
-		return this.namespace;
+		this.resultMaps = resultMaps;
+		this.selects = selects;
 	}
 
 	@Override
+	public String getNamespace() {
+		return this.namespace;
+	}
+
 	public void setNamesapce(String namespace) {
 		this.namespace = namespace;
 	}
 
 	@Override
 	public Select findSelect(String id) {
-//BinaryTree로 변경되면서 코드바 바뀌었다. by kwSeo
-//		Select select = SelectFactory.getInstance().createDefaultSelect();
-//		select.setId(id);
-//		int index = Collections.binarySearch(selectList, select);
+		Select select = selects.get(id);
 		
-		Select select = SelectFactory.getInstance().createDefaultSelect();
-		select.setId(id);
-		
-		return selectList.search(select);
+		return select;
 	}
 	
 	@Override
 	public ResultMap findResultMap(String id) {
-//BinaryTree로 변경되면서 코드바 바뀌었다. by kwSeo
-//		ResultMap resultMap = ResultMapFactory.getInstance().createDefaultResultMap();
-//		resultMap.setId(id);
-//		int index = Collections.binarySearch(resultMapList, resultMap);
+		ResultMap resultMap = resultMaps.get(id);
+
+		return resultMap;
+	}
+
+	@Override
+	public List<Select> getSelects() {
+		return new ArrayList<>(selects.values());
 		
-		ResultMap resultMap = ResultMapFactory.getInstance().createDefaultResultMap();
-		resultMap.setId(id);
-		return resultMapList.search(resultMap);
 	}
 
-	@Override
-	public SearchList<Select> getSelectList() {
-		return selectList;
-	}
 
 	@Override
-	public SearchList<ResultMap> getResultMapList() {
-		return resultMapList;
+	public List<ResultMap> getResultMaps() {
+		return new ArrayList<>(resultMaps.values());
 	}
 
-	@Override
-	public void setSelect(Select select) {
-		selectList.add(select);
-	}
-
-	@Override
-	public void setSelectList(SearchList<Select> list){
-		this.selectList = list;
-	}
-
-	@Override
-	public void setResultMapList(SearchList<ResultMap> resultTypeList) {
-		this.resultMapList = resultTypeList;
-	}
 	
-	
-
 }

@@ -1,5 +1,9 @@
 package team.afgm.rdfom.mapper;
-
+/**
+ * 
+ * @author kwSeo
+ *
+ */
 public class Result {
 	public String column;
 	public String field;
