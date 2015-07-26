@@ -27,5 +27,9 @@
 				hc:name	?name.
 		}
 	</select>
+	
+	<select id="testSelect3" resultType="String">
+		select distinct ?Concept where {[] a ?Concept} LIMIT 100
+	</select>
 </mapper>	
 	

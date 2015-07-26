@@ -1,6 +1,6 @@
 package team.afgm.rdfom.mapper;
 
-import java.util.List;
+import team.afgm.util.collection.SearchList;
 
 /**
  * 
@@ -10,12 +10,12 @@ import java.util.List;
 public interface MapperConfig {
 	public String getNamesapce();
 	public Select findSelect(String id);
-	public List<Select> getSelectList();
+	public SearchList<Select> getSelectList();
 	public ResultMap findResultMap(String id);
-	public List<ResultMap> getResultMapList();
+	public SearchList<ResultMap> getResultMapList();
 	public void setNamesapce(String namespace);
 	public void setSelect(Select select);
-	public void setSelectList(List<Select> list);
-	public void setResultMapList(List<ResultMap> resultTypeList);
+	public void setSelectList(SearchList<Select> list);
+	public void setResultMapList(SearchList<ResultMap> resultTypeList);
 	
 }

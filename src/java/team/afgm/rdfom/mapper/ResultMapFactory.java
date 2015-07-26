@@ -6,6 +6,8 @@ import java.util.List;
 import org.w3c.dom.Document;
 
 import team.afgm.rdfom.xml.parser.XMLManager;
+import team.afgm.util.collection.BinaryTreeList;
+import team.afgm.util.collection.SearchList;
 
 public class ResultMapFactory {
 	private static ResultMapFactory factory = new ResultMapFactory();
@@ -20,8 +22,8 @@ public class ResultMapFactory {
 		return new ResultMapImpl();
 	}
 	
-	public List<ResultMap> createResultMapsByXML(String mapperPath){
-		List<ResultMap> list = new ArrayList<>();
+	public SearchList<ResultMap> createResultMapsByXML(String mapperPath){
+		SearchList<ResultMap> list = new BinaryTreeList<>();
 		XMLManager xml = new XMLManager(mapperPath);
 		int numOfResultMap = xml.getInteger("count(//resultMap)");
 		
@@ -37,6 +39,9 @@ public class ResultMapFactory {
 		return list;
 	}
 	
+	/*
+	 * Result 클래스들도 BinaryTree로 관리하는게 낫지 않을까?
+	 */
 	protected List<Result> getResults(XMLManager xml, int index){
 		List<Result> results = new ArrayList<>();
 		String expr = "//resultMap[" + index +"]/result";
