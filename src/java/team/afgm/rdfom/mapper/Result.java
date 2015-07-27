@@ -5,8 +5,8 @@ package team.afgm.rdfom.mapper;
  *
  */
 public class Result {
-	public String column;
-	public String field;
+	private String column;
+	private String field;
 	
 	public String getColumn() {
 		return column;
