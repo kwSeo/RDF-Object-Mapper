@@ -1,5 +1,7 @@
 package team.afgm.rdfom.context;
 
+import team.afgm.rdfom.xml.parser.XMLManager;
+
 public class ContextConfigFactory {
 	private static ContextConfigFactory factory;
 	static {
@@ -12,11 +14,12 @@ public class ContextConfigFactory {
 		return factory;
 	}
 	
-	public ContextConfig createContextConfig(String mapperPath) {
+	public ContextConfig createContextConfig(String contextPath) {
+		XMLManager xml = new XMLManager(contextPath);
 		return new ContextConfigImpl(
-				EndPointFactory.getInstance().createEndPointByXML(mapperPath),
-				NamespacesFactory.getInstance().createNamespacesByXML(mapperPath),
-				MappersFactory.getInstance().createMappersByXML(mapperPath)
+					EndpointsParser.parse(xml),
+					NamespacesParser.parse(xml),
+					MapperResourcesParser.parse(xml)
 				);
 	}
 

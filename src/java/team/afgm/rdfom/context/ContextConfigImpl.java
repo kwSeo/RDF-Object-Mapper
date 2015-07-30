@@ -1,68 +1,56 @@
 package team.afgm.rdfom.context;
 
-
-import java.util.Collections;
-import java.util.List;
-
 public class ContextConfigImpl implements ContextConfig {
-	
-	private List<EndPoint> endpointList;
-	private List<Namespaces> namespacesList;
-	private List<Mappers> mappersList;
-
-	public ContextConfigImpl() {
-		
-	}
-
-	public ContextConfigImpl(List<EndPoint> endpointList,
-			List<Namespaces> namespacesList,
-			List<Mappers> mappersList) {
-		this.endpointList = endpointList;
-		this.namespacesList = namespacesList;
-		this.mappersList = mappersList;
-	}
-
-	@Override
-	public EndPoint findEndPoint(String id) {
-		EndPoint endpoint = EndPointFactory.getInstance().createDefaultEndPoint();
-		endpoint.setId(id);
-		int index = Collections.binarySearch(endpointList, endpoint);
-		return endpointList.get(index);
-	}
-
-	@Override
-	public List<EndPoint> getEndPointList() {
-		return endpointList;
-	}
-
-	@Override
-	public List<Namespaces> getNamespacesList() {
-		return namespacesList;
-	}
-
-	@Override
-	public List<Mappers> getMappersList() {
-		return mappersList;
-	}
-
-	@Override
-	public void setEndPointList(List<EndPoint> endpoint) {
-		this.endpointList = endpoint;
-		
-	}
-
-	@Override
-	public void setNamespacesList(List<Namespaces> namespaces) {
-		this.namespacesList = namespaces;
-		
-	}
-
-	@Override
-	public void setMappersList(List<Mappers> mappers) {
-		this.mappersList = mappers;
-		
-	}
-	
+	private Endpoints endpoints;
+	private Namespaces namespaces;
+	private MapperResources mapperResources;
 	
 
+	public ContextConfigImpl(Endpoints endpoints, Namespaces namespaces, MapperResources mapperResources) {
+		this.endpoints = endpoints;
+		this.namespaces = namespaces;
+		this.mapperResources = mapperResources;
+	}
+
+	@Override
+	public Endpoints getEndpoints() {
+		return endpoints;
+	}
+
+	public void setEndpoints(Endpoints endpoints) {
+		this.endpoints = endpoints;
+	}
+
+	@Override
+	public Namespaces getNamespaces() {
+		return namespaces;
+	}
+
+	public void setNamespaces(Namespaces namespaces) {
+		this.namespaces = namespaces;
+	}
+
+	@Override
+	public MapperResources getMapperResources() {
+		return mapperResources;
+	}
+
+	public void setMapperResources(MapperResources mapperResources) {
+		this.mapperResources = mapperResources;
+	}
+
+	@Override
+	public Endpoint findEndPoint(String id) {
+		return endpoints.findEndpoint(id);
+	}
+
+	@Override
+	public Namespace findNamespace(int index) {
+		return namespaces.getNamespace(index);
+	}
+
+	@Override
+	public MapperResource findMapperResource(int index) {
+		return mapperResources.getMapperResource(index);
+	}
 }
