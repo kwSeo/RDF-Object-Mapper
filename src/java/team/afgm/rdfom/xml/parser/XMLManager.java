@@ -24,7 +24,7 @@ import team.afgm.rdfom.xml.exception.XmlBuildException;
  *
  */
 public class XMLManager {
-	private Document doc;
+	private Node doc;
 	private XPath xPath;
 	private String path;
 	
@@ -44,6 +44,20 @@ public class XMLManager {
 		}catch(Exception e){
 			throw new XmlBuildException("Error finding XML path.");
 		}
+	}
+	
+	public XMLManager(Node rootNode){
+		this("", rootNode, XPathFactory.newInstance().newXPath());
+	}
+	
+	public XMLManager(String path, Node rootNode, XPath xPath){
+		this.path = path;
+		this.doc = rootNode;
+		this.xPath = xPath;
+	}
+	
+	public Node getNode(String expr){
+		return (Node)evaluate(expr, doc, XPathConstants.NODE);
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package team.afgm.rdfom.mapper;
 
+import team.afgm.rdfom.xml.parser.XMLManager;
+
 /**
  * 
  * @author kwSeo
@@ -13,14 +15,18 @@ public class MapperConfigFactory {
 	
 	private MapperConfigFactory(){}
 	
-	public static MapperConfigFactory getInstance(){
+	public static MapperConfigFactory get(){
 		return factory;
 	}
 	
-	public MapperConfig createMapperConfig(String namespace, String mapperPath){
-		return new MapperConfigImpl(
-				namespace,
-				SelectFactory.getInstance().createSelectsByXML(mapperPath),
-				ResultMapFactory.getInstance().createResultMapsByXML(mapperPath));
+	public MapperConfig createMapperConfig(String mapperPath){
+		XMLManager xml = new XMLManager(mapperPath);
+		
+		MapperConfigImpl config = new MapperConfigImpl(
+				xml.getString("//@namespace"),
+				ResultMapParser.parse(xml),
+				SelectParser.parse(xml));
+		
+		return config;
 	}
 }

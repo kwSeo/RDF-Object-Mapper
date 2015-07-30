@@ -1,6 +1,6 @@
 package team.afgm.rdfom.util;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public class StringUtil {
 	/**
@@ -16,18 +16,14 @@ public class StringUtil {
 	public static <T> String toString(T obj){
 		try{
 			StringBuilder sb = new StringBuilder();
-			
 			Class classType = obj.getClass();
-			Field[] fields = classType.getDeclaredFields();
+			Method[] methods = classType.getMethods();
 			
-			for(Field field : fields){
-				String fieldName = field.getName();
-				if(fieldName.equals("class"))
-					continue;
-				String getterName = "get" + toCamelCaseSimple(fieldName);
-				Object returnValue = classType.getMethod(getterName).invoke(obj);
-				sb.append(returnValue)
-					.append(", ");
+			for(Method method : methods){
+				if(method.getName().matches("^get(.)*") && !method.getName().equals("getClass")){
+					Object value = method.invoke(obj);
+					sb.append(value).append(", ");
+				}
 			}
 			
 			String str = sb.toString();
