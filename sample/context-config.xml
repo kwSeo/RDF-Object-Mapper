@@ -9,7 +9,7 @@
 		</endpoint>
 		
 		<endpoint id="dbpedia" type="url" default="true">
-			<property name="path">http://ko.dbpedia.org/sparql</property>
+			<property name="url">http://ko.dbpedia.org/sparql</property>
 		</endpoint>
 	</endpoints>
 	

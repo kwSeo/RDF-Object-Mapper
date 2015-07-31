@@ -3,7 +3,7 @@
 	<!ELEMENT endpoints (endpoint+)>
 		<!ELEMENT endpoint (property+)>
 			<!ATTLIST endpoint type (file|url) #REQUIRED>
-			<!ATTLIST endpoint default CDATA #IMPLIED>
+			<!ATTLIST endpoint default CDATA "false" >
 			<!ATTLIST endpoint id CDATA #REQUIRED>
 			<!ELEMENT property (#PCDATA)>
 				<!ATTLIST property name CDATA #REQUIRED>

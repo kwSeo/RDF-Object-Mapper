@@ -3,7 +3,7 @@ package team.afgm.rdfom.session;
 import java.util.List;
 
 import team.afgm.rdfom.context.ContextConfig;
-import team.afgm.rdfom.context.EndPoint;
+import team.afgm.rdfom.context.Endpoint;
 import team.afgm.rdfom.endpoint.EndpointProcesser;
 import team.afgm.rdfom.endpoint.FileEndpointProcesser;
 import team.afgm.rdfom.mapper.MapperConfig;
@@ -30,7 +30,7 @@ public class MappingSessionFactory {
 	
 	public MappingSession createMappingSession(String endpointId){
 		EndpointProcesser processer;
-		EndPoint endpoint = contextConfig.findEndPoint(endpointId);
+		Endpoint endpoint = contextConfig.findEndPoint(endpointId);
 		String type = endpoint.getType().trim().toLowerCase();
 		switch(type){
 		case ENDPOINT_TYPE_FILE:
