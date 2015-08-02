@@ -15,11 +15,12 @@
 	
 	<namespaces>
 		<namespace prefix="hc" url="http://sample.com#"/>
-		<namespace prefix="foaf" url="ttp://xmlns.com/foaf/0.1/"/>
+		<namespace prefix="foaf" url="http://xmlns.com/foaf/0.1/"/>
+		<namespace prefix="vcard" url="http://www.w3.org/2001/vcard-rdf/3.0#"/>
 	</namespaces>
 	
 	<mappers>
-		<mapper resource="team/afgm/rdfom/test-sample1.xml"/>
-		<mapper resource="team/afgm/rdfom/test-sample2.xml"/>
+		<mapper resource="sample/mapper-sample.xml"/>
+		<mapper resource="sample/mapper-sample2.xml"/>
 	</mappers>
 </configuration>

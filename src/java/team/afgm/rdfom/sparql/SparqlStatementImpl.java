@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import team.afgm.rdfom.context.Namespace;
 import team.afgm.rdfom.util.StringUtil;
 
 /**
@@ -23,7 +24,11 @@ public class SparqlStatementImpl implements SparqlStatement{
 	public static class SparqlStatementBuilder{
 		public static SparqlStatement newInstance(String sparqlQuery){
 			return new SparqlStatementImpl(sparqlQuery);
-		}		
+		}
+		
+		public static SparqlStatement newInstance(String sparqlQuery, List<Namespace> namespaces){
+			return new SparqlStatementImpl(sparqlQuery, namespaces);
+		}
 	}
 	
 	/**
@@ -40,8 +45,12 @@ public class SparqlStatementImpl implements SparqlStatement{
 	 * @param sparqlQuery
 	 */
 	private SparqlStatementImpl(String sparqlQuery){
-		this.originalQuery = query = sparqlQuery;
-		this.namespaces = new ArrayList<>();
+		this(sparqlQuery, new ArrayList<>());
+	}
+	
+	private SparqlStatementImpl(String sparqlQuery, List<Namespace> namespaces){
+		this.originalQuery = this.query = sparqlQuery;
+		this.namespaces = namespaces;
 	}
 	
 	/**
@@ -106,7 +115,7 @@ public class SparqlStatementImpl implements SparqlStatement{
 	public String getQuery() {
 		StringBuilder queryBuilder = new StringBuilder();
 		for(Namespace namespace : namespaces){
-			String prefixName = namespace.getName();
+			String prefixName = namespace.getPrefix();
 			String url = namespace.getUrl();
 			queryBuilder.append("PREFIX ")
 				.append(prefixName).append(": <")

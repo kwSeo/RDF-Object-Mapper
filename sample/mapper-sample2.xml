@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	SYSTEM "mapper-prototype.dtd">
+
+<mapper namespace="afgm.seo.test2">
+	<select id="selectOne" resultType="team.afgm.rdfom.mappingsession.test.Person">
+		select distinct ?name ?family
+		where {
+			?x vcard:N ?name;
+			   vcard:FN ?family.
+		}
+
+	</select>
+</mapper>	
