@@ -64,8 +64,6 @@ public class MappingSessionImpl implements MappingSession{
 			stmt = SparqlStatementBuilder.newInstance(select.getQuery(), 
 													  contextConfig.getNamespaces().getNamespaces());
 
-
-
 			ResultSet resultSet = endpointProcesser.executeSelect(stmt.getQuery());
 			
 			String resultTypeId = select.getResultType();
@@ -119,12 +117,23 @@ public class MappingSessionImpl implements MappingSession{
 		try{
 			stmt = SparqlStatementBuilder.newInstance(select.getQuery(), 
 													  contextConfig.getNamespaces().getNamespaces());
+			String resultTypeId = select.getResultType();
+			String resultType;
 			mapper = new ObjectMapper();
-			Class<T> returnType = (Class<T>)Class.forName(select.getResultType());
+			if(isResultMap(namespace, resultTypeId)){
+				ResultMap resultMap = mapperConfigMap.get(namespace).findResultMap(resultTypeId);
+				resultType = resultMap.getType();
+				List<Result> resultList = resultMap.getResults();
+				mapper.setMappingHandler(new ResultMapHandler(resultList));
+				
+			}else{
+				resultType = select.getResultType();
+			}
+			Class<T> classType = (Class<T>)Class.forName(resultType);
 			
 			ResultSet resultSet = endpointProcesser.executeSelect(stmt.getQuery());
 			
-			return mapper.readValueAsList(resultSet, returnType);
+			return mapper.readValueAsList(resultSet, classType);
 			
 		}catch(Exception e){
 			throw new RuntimeException("객체 매핑 실패." + e.getMessage());

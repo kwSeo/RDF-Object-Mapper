@@ -16,23 +16,27 @@ import team.afgm.rdfom.util.StringUtil;
  */
 public class MappingSessionTest {
 	private MappingSessionFactory factory = MappingSessionFactoryBuilder.build("sample/context-config.xml");;
-	
+
 	@Test
-	public void testMappingSession(){
+	public void testMappingSessionResultMap(){
+		System.out.println("-------------------------------------------");
 		MappingSession session = factory.createMappingSession("testFile");
-		Person person = session.selectOne("afgm.seo.test2.selectOne");
 		
-		System.out.println(StringUtil.toString(person));
-	}
-	
-	@Test
-	public void testMappingSessionList(){
-		MappingSession session = factory.createMappingSession("testFile");
+		Person personOne = session.selectOne("afgm.seo.test2.selectOne");
+		
+		System.out.println(StringUtil.toString(personOne));
+		
 		List<Person> persons = session.selectList("afgm.seo.test2.selectOne");
 		
 		for(Person person : persons){
 			System.out.println(StringUtil.toString(person));
 		}
 		
+		List<Person> persons2 = session.selectList("afgm.seo.test2.selectTwo");
+		
+		for(Person person : persons2){
+			System.out.println(StringUtil.toString(person));
+		}
+		System.out.println("-------------------------------------------");
 	}
 }
