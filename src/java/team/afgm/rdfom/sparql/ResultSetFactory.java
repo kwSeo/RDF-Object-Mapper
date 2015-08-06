@@ -33,19 +33,30 @@ public class ResultSetFactory {
 		
 		resultSet.setColumnNames(columnNames);
 		
-		List<Result> results = data.getResults().getResult();
-		for(Result result : results){
-			Row row = new Row();
-			List<Binding> bindings = result.getBinding();
-			for(Binding binding : bindings){
-				String col = binding.getName();
-				Object value = binding.getValue();
-				row.setValue(col, value);
+		try{
+			List<Result> results = data.getResults().getResult();
+
+			for(Result result : results){
+				Row row = new Row();
+				List<Binding> bindings = result.getBinding();
+				for(Binding binding : bindings){
+					String col = binding.getName();
+					Object value = binding.getValue();
+					row.setValue(col, value);
+				}
+				resultSet.addRow(row);
 			}
-			resultSet.addRow(row);
+			
+			return resultSet;
+			
+		}catch(NullPointerException e){
+			//결과값이 업사면 그냥 반환
+			return resultSet;
+		}catch(Exception e){
+			e.printStackTrace(System.out);
+			throw new RuntimeException("Error parsing JAXBData to ResultSet. " + e.getMessage());
 		}
 		
-		return resultSet;
 	}
 	
 	public Object bind(Reader reader, Class<?> classType){
@@ -55,6 +66,7 @@ public class ResultSetFactory {
 			return un.unmarshal(reader);
 			
 		}catch(Exception e){
+			e.printStackTrace(System.out);
 			throw new RuntimeException("Error Unmarshaller.");
 		}
 	}

@@ -15,7 +15,7 @@ import team.afgm.rdfom.util.StringUtil;
  *
  */
 public class MappingSessionTest {
-	private MappingSessionFactory factory = MappingSessionFactoryBuilder.build("sample/context-config.xml");;
+	private MappingSessionFactory factory = MappingSessionFactoryBuilder.build("sample/context-config2.xml");;
 
 	@Test
 	public void testMappingSessionResultMap(){
@@ -32,11 +32,19 @@ public class MappingSessionTest {
 			System.out.println(StringUtil.toString(person));
 		}
 		
+		//TODO 결과값이 하나도 없으면 에러
 		List<Person> persons2 = session.selectList("afgm.seo.test2.selectTwo");
 		
 		for(Person person : persons2){
 			System.out.println(StringUtil.toString(person));
 		}
 		System.out.println("-------------------------------------------");
+	}
+	
+	@Test
+	public void testMappingSessionIntegerType(){
+		MappingSession session = factory.createMappingSession("testFile2");
+		Person person = session.selectOne("afgm.seo.test2.selectWithInt");
+		System.out.println(StringUtil.toString(person));
 	}
 }

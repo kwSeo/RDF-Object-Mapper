@@ -7,7 +7,7 @@
 		<endpoint id="testFile" type="file">
 			<property name="path">sample/test.rdf</property>			
 		</endpoint>
-		
+
 		<endpoint id="dbpedia" type="url" default="true">
 			<property name="url">http://ko.dbpedia.org/sparql</property>
 		</endpoint>

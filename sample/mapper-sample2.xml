@@ -25,4 +25,11 @@
 		}
 
 	</select>
+	
+	<select id="selectWithInt" resultType="team.afgm.rdfom.mappingsession.test.Person">
+		select distinct ?name ?age
+		where {
+			?name info:age ?age.
+		}
+	</select>
 </mapper>	

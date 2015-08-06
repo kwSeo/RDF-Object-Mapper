@@ -80,7 +80,7 @@ public class ObjectMapper {
 			
 			for(String column : columnNames){
 				//TODO 값을 문자열로만 받아오고 있다. 개선이 필요.
-				Object value = resultSet.getString(column);
+				Object value = resultSet.getValue(column);
 				Method method = classType.getMethod(
 								"set" + StringUtil.toCamelCaseSimple(
 										handler.convert(column)), 

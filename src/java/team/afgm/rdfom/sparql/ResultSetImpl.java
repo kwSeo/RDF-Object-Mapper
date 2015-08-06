@@ -86,5 +86,10 @@ public class ResultSetImpl implements ResultSet{
 		return columnNames;
 	}
 
+	@Override
+	public Object getValue(String column) {
+		return rows.get(index).getValue(column);
+	}
+
 	
 }
