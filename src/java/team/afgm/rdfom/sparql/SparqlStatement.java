@@ -2,6 +2,8 @@ package team.afgm.rdfom.sparql;
 
 import java.util.Map;
 
+import team.afgm.rdfom.context.Namespace;
+
 /**
  * 기존 JDBC의 PreparedStatement처럼 쿼리문을 관리하며 전달받은 파라미터(클래스 등)로 값을 채워준다.
  * setValue 메서드를 통해 값을 전달할 수 있다. 본 라이브러리에서 사용되는 SPARQL 쿼리문에는 #{name} 형식의 구문이 포함시킬 수 있는데

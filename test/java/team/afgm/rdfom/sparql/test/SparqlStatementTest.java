@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import team.afgm.rdfom.sparql.Namespace;
+import team.afgm.rdfom.context.Namespace;
 import team.afgm.rdfom.sparql.SparqlStatement;
 import team.afgm.rdfom.sparql.SparqlStatementImpl.SparqlStatementBuilder;
 
@@ -45,7 +45,7 @@ public class SparqlStatementTest {
 		Namespace namespace = new Namespace(){
 
 			@Override
-			public String getName() {
+			public String getPrefix() {
 				return "hc";
 			}
 

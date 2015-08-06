@@ -73,7 +73,8 @@ public class FileEndpointProcesser extends EndpointProcesser{
 			return ResultSetFactory.getInstance().createJAXBResultSet(xmlStr);
 			
 		}catch(Exception e){
-			throw new XMLParserException("Error parsing SPARQL result XML.");
+			e.printStackTrace(System.out);
+			throw new XMLParserException("Error parsing SPARQL result XML. " + e.getMessage());
 		}
 	}
 

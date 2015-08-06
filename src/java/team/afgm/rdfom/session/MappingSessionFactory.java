@@ -1,6 +1,6 @@
 package team.afgm.rdfom.session;
 
-import java.util.List;
+import java.util.Map;
 
 import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.context.Endpoint;
@@ -20,10 +20,10 @@ public class MappingSessionFactory {
 	public static final String ENDPOINT_TYPE_URL = "url";
 	
 	private ContextConfig contextConfig;
-	private List<MapperConfig> mapperConfigs;
+	private Map<String, MapperConfig> mapperConfigs;
 	
 	
-	public MappingSessionFactory(ContextConfig contextConfig, List<MapperConfig> mapperConfig){
+	public MappingSessionFactory(ContextConfig contextConfig, Map<String, MapperConfig> mapperConfig){
 		this.contextConfig = contextConfig;
 		this.mapperConfigs = mapperConfig;
 	}

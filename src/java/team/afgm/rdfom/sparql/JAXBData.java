@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /** 
  * 
@@ -108,7 +109,7 @@ class Binding{
 	private String uri="";
 	private String bnode="";
 	private String name="";
-	private String literal = "";
+	private Literal literal;
 	
 	private String type="";
 	
@@ -125,7 +126,7 @@ class Binding{
 	}
 
 	@XmlElement(name="literal")
-	public void setLiteral(String literal){
+	public void setLiteral(Literal literal){
 		this.literal = literal;
 		this.type = "literal";
 	}
@@ -150,22 +151,52 @@ class Binding{
 	public String getType(){
 		return type;
 	}
-	
-	public String getLiteral(){
+	public Literal getLiteral(){
 		return this.literal;
 	}
 	
-	public String getValue(){
+	public Object getLiteralV(){
+		if(literal.getDatatype().equals("http://www.w3.org/2001/XMLSchema#integer"))
+			return Integer.parseInt(literal.getLiteral());
+		else
+			return literal.getLiteral();
+	}
+	
+	public Object getValue(){
 		switch(type){
 		case "uri":
 			return getUri();
 		case "bnode":
 			return getBnode();
 		case "literal":
-			return getLiteral();
+			return getLiteralV();
 		default:
 			throw new RuntimeException("Error JAXBData getValue.");
 		}
 	}
+}
+
+@XmlRootElement(name="literal")
+class Literal{
+	private String literal;
+	private String datatype = "string";
+	
+	public String getLiteral() {
+		return literal;
+	}
+	
+	@XmlValue
+	public void setLiteral(String literal) {
+		this.literal = literal;
+	}
+	public String getDatatype() {
+		return datatype;
+	}
+	
+	@XmlAttribute(name="datatype")
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
+	}
+	
 	
 }

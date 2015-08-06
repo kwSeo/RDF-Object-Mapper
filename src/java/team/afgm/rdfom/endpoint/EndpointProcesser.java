@@ -1,10 +1,8 @@
 package team.afgm.rdfom.endpoint;
 
-import org.w3c.dom.Document;
+import team.afgm.rdfom.sparql.ResultSet;
 
 import com.hp.hpl.jena.rdf.model.Model;
-
-import team.afgm.rdfom.sparql.ResultSet;
 
 /**
  * SPARQL 쿼리를 수행하여 알맞은 갑슬 반환한다.
@@ -20,7 +18,7 @@ public abstract class EndpointProcesser {
 	 * 표준포맷에는 XML, JSON 등이 존재하며, 본 메서드는 XML포맷을 사용한다.
 	 * 
 	 * @param sparql
-	 * @return Document
+	 * @return ResultSet
 	 *   반환되는 값은 org.w3c.dom.Document 객체이다.
 	 */
 	public abstract ResultSet executeSelect(String sparql);
