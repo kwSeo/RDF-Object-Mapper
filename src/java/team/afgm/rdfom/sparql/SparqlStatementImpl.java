@@ -98,7 +98,7 @@ public class SparqlStatementImpl implements SparqlStatement{
 	
 	@Override
 	public void setValue(String key, String value){
-		query = query.replaceAll("#\\{" + key + "\\}", "\"" + value + "\"");
+		query = query.replaceAll("#\\{" + key + "\\}", "\"" + value + "\""); //큰따옴표가 붙는다!
 	}
 
 	public <T> void setValue(String key, T value){

@@ -1,8 +1,8 @@
 package team.afgm.rdfom.mappingsession.test;
 
 public class Person {
-	private String name;
-	private String family;
+	private String name="Test N";
+	private String family="Test F";
 	private int age=0;
 	
 	public String getName() {

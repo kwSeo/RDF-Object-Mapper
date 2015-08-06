@@ -32,4 +32,12 @@
 			?name info:age ?age.
 		}
 	</select>
+	
+	<select id="selectWithParam" resultType="team.afgm.rdfom.mappingsession.test.Person">
+		select distinct ?age
+		where {
+			?x vcard:FN #{name};
+			   info:age ?age.
+		}
+	</select>
 </mapper>	

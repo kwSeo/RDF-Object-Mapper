@@ -20,6 +20,7 @@
 		<namespace prefix="foaf" url="http://xmlns.com/foaf/0.1/"/>
 		<namespace prefix="vcard" url="http://www.w3.org/2001/vcard-rdf/3.0#"/>
 		<namespace prefix="info" url="http://somewhere/peopleInfo#"/>
+		<namespace prefix="xsd" url="http://www.w3.org/2001/XMLSchema#"/>
 	</namespaces>
 	
 	<mappers>
