@@ -71,7 +71,7 @@ public class ObjectMapperTest {
 		
 		@Override
 		public String convert(String columnName) {
-			return map.get(columnName);
+			return StringUtil.toCamelCaseSimple(map.get(columnName));
 		}
 		
 	}

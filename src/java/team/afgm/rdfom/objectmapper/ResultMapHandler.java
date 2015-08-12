@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import team.afgm.rdfom.mapper.Result;
+import team.afgm.rdfom.util.StringUtil;
 
 /**
  * 
@@ -27,7 +28,7 @@ public class ResultMapHandler implements MappingHandler{
 	
 	@Override
 	public String convert(String columnName) {
-		return map.get(columnName);
+		return StringUtil.toCamelCaseSimple(map.get(columnName));
 	}
 	
 }
