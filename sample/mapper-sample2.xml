@@ -40,4 +40,18 @@
 			   info:age ?age.
 		}
 	</select>
+	
+	<select id="selectAge" resultType="java.lang.Integer">
+		select distinct ?age
+		where {
+			?x info:age ?age.
+		}
+	</select>
+	
+	<select id="selectAge2" resultType="Integer">
+		select distinct ?age
+		where {
+			?x info:age ?age.
+		}
+	</select>
 </mapper>	

@@ -20,7 +20,7 @@ import team.afgm.rdfom.sparql.SparqlStatementImpl.SparqlStatementBuilder;
 import team.afgm.rdfom.util.StringUtil;
 
 /**
- * TODO 메소드간에 코드가 많이 중복된다. 해결해야한다!
+ * TODO 클래스가 점점 방대해져간다...
  * 아직 ContextConfig이 완성되지 않았기 때문에 완성할 수 없다.
  * MapperConfig 리스트가 아니라 맵으로 관리하자.
  * @author kwSeo
@@ -72,49 +72,59 @@ public class MappingSessionImpl implements MappingSession{
 			namespace = splitedId[0];
 			realId = splitedId[1];
 		}catch(Exception e){
+			e.printStackTrace(System.out);
 			throw new RuntimeException("잘못된 네임스페이스." + e.getMessage());
 		}
 		
-		MapperConfig mapperConfig;
-		Select select;
-		try{
-			//해당하는 Mapper 설정을 찾음
-			mapperConfig = mapperConfigMap.get(namespace);
-			//해당하는 Mapper 설정 내의 선택한 Select를 찾음.
-			select = mapperConfig.findSelect(realId);
-		}catch(Exception e){
-			throw new RuntimeException("네임스페이스 또는 아이디에 해당하는 개체가 없음." + e.getMessage());
-		}
+
+		Select select = findSelect(namespace, realId);
 
 		SparqlStatement stmt;
-		ObjectMapper mapper;
 		try{
 			stmt = SparqlStatementBuilder.newInstance(select.getQuery(), 
 													  contextConfig.getNamespaces().getNamespaces());
 			if(param != null)
 				stmt.setValue(param);
+		}catch(Exception e){
+			e.printStackTrace(System.out);
+			throw new RuntimeException("Error SparqlStatement setup. " + e.getMessage());
+		}
+
+		try{
+			/*
+			 * 지정된 ResultType이 ResultMap이냐 아니냐에 따라서 다른 ObjectMapper가 생성될 것있다. 
+			 */
+			ObjectMapper mapper;
 			
-			
-			String resultTypeId = select.getResultType();
+			String resultMapId = select.getResultType();
 			String resultType;
-			mapper = new ObjectMapper();
-			if(isResultMap(namespace, resultTypeId)){
-				ResultMap resultMap = mapperConfigMap.get(namespace).findResultMap(resultTypeId);
+			if(isResultMap(namespace, resultMapId)){
+				ResultMap resultMap = mapperConfigMap.get(namespace).findResultMap(resultMapId);
 				resultType = resultMap.getType();
-				List<Result> resultList = resultMap.getResults();
-				mapper.setMappingHandler(new ResultMapHandler(resultList));
-				
+				mapper = createObjectMapper(resultMap);
 			}else{
-				resultType = select.getResultType();
+				resultType = resultMapId;
+				mapper = createObjectMapper();
 			}
-			Class<T> classType = (Class<T>)Class.forName(resultType);
+
+			Class<T> classType;
+			
+			try{
+				classType = (Class<T>)Class.forName(resultType);
+			}catch(Exception e){
+				/*
+				 * ResultMap도 아니고 지정된 클래스가 있는 것도 아니다. 그렇다면 java.lang에 존재하는 클래스인지 확인한다.
+				 */
+				classType = (Class<T>)Class.forName("java.lang." + resultType);
+			}
 			
 			ResultSet resultSet = endpointProcesser.executeSelect(stmt.getQuery());
 			
-			return mapper.readValueAsList(resultSet, classType);
+			return mapper.readValueAsList(resultSet, classType);	//반환
 			
 		}catch(Exception e){
-			throw new RuntimeException("객체 매핑 실패." + e.getMessage());
+			e.printStackTrace(System.out);
+			throw new RuntimeException("Error mapping object. " + e.getMessage());
 		}
 	}
 
@@ -148,7 +158,7 @@ public class MappingSessionImpl implements MappingSession{
 			return mapperConfig.findSelect(queryId);
 			
 		}catch(Exception e){
-			throw new RuntimeException("네임스페이스 또는 아이디에 해당하는 개체가 없음." + e.getMessage());
+			throw new RuntimeException("Error finding select with namespace and id. " + e.getMessage());
 		}
 	}
 
@@ -173,5 +183,20 @@ public class MappingSessionImpl implements MappingSession{
 		}
 		
 		return map;
+	}
+	
+	protected ObjectMapper createObjectMapper(){
+		return createObjectMapper(null);
+	}
+	
+	protected ObjectMapper createObjectMapper(ResultMap resultMap){
+		ObjectMapper mapper = new ObjectMapper();
+		
+		if(resultMap != null){
+			List<Result> resultList = resultMap.getResults();
+			mapper.setMappingHandler(new ResultMapHandler(resultList));
+		}
+		
+		return mapper;
 	}
 }

@@ -32,6 +32,18 @@ public class MappingSessionAllTest {
 		map.put("name", "John Smith");
 		Person personOne = session.selectOne("afgm.seo.test2.selectWithParam", map);
 		System.out.println(StringUtil.toString(personOne));
+		
+		System.out.println("----------------------------------------------------------");
+		
+		//resultType = java.lang.Integer
+		Integer age = session.selectOne("afgm.seo.test2.selectAge");
+		System.out.println("Literal age: " + age);
+		
+		System.out.println("----------------------------------------------------------");
+		
+		//resultType = Integer
+		int age2 = session.selectOne("afgm.seo.test2.selectAge2");
+		System.out.println("Literal age2: " + age2);
 	}
 	
 	@Before
