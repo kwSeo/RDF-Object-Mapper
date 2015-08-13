@@ -35,9 +35,15 @@ public class MappingSessionAllTest {
 		
 		System.out.println("----------------------------------------------------------");
 		
-
+		//resultType = java.lang.Integer
 		Integer age = session.selectOne("afgm.seo.test2.selectAge");
 		System.out.println("Literal age: " + age);
+		
+		System.out.println("----------------------------------------------------------");
+		
+		//resultType = Integer
+		int age2 = session.selectOne("afgm.seo.test2.selectAge2");
+		System.out.println("Literal age2: " + age2);
 	}
 	
 	@Before

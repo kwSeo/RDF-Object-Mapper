@@ -88,9 +88,10 @@ public class ObjectMapper {
 			instance = constructor.newInstance(String.valueOf(resultSet.getValue(columnName)));
 			
 			return instance;
+			
 		}catch(Exception e){
 			e.printStackTrace(System.out);
-			throw new ObjectMapperException("Error creating literal instance.");
+			throw new ObjectMapperException("Error creating literal instance. " + e.getMessage());
 		}
 	}
 	/**
