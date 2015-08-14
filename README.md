@@ -10,7 +10,7 @@
 ##참고
  - [W3C RDF](http://www.w3.org/RDF/)
  - [SPARQL Query Language for RDF](http://www.w3.org/TR/rdf-sparql-query/)
- - [SPARQL Query Results XML Format (Second Edition)]
+ - [SPARQL Query Results XML Format (Second Edition)](http://www.w3.org/TR/rdf-sparql-XMLres/)
 
 ##MappingSession의 구성요소(라이브러리 전체구조가 아님 오직 MappingSession)
 ![MappingSession](https://googledrive.com/host/0B-OVDZGx-FlnMzkyTXQ0d3Yya28)
