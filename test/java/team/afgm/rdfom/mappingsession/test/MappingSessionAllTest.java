@@ -44,6 +44,11 @@ public class MappingSessionAllTest {
 		//resultType = Integer
 		int age2 = session.selectOne("afgm.seo.test2.selectAge2");
 		System.out.println("Literal age2: " + age2);
+		
+		System.out.println("----------------------------------------------------------");
+		
+		boolean bool1 = session.ask("afgm.seo.testAsk.testAsk1");
+		System.out.println(bool1);
 	}
 	
 	@Before

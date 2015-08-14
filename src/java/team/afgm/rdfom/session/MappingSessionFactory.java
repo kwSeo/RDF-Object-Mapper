@@ -4,8 +4,8 @@ import java.util.Map;
 
 import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.context.Endpoint;
-import team.afgm.rdfom.endpoint.EndpointProcesser;
-import team.afgm.rdfom.endpoint.FileEndpointProcesser;
+import team.afgm.rdfom.endpoint.EndpointProcessor;
+import team.afgm.rdfom.endpoint.FileEndpointProcessor;
 import team.afgm.rdfom.mapper.MapperConfig;
 
 /**
@@ -29,15 +29,15 @@ public class MappingSessionFactory {
 	}
 	
 	public MappingSession createMappingSession(String endpointId){
-		EndpointProcesser processer;
+		EndpointProcessor processer;
 		Endpoint endpoint = contextConfig.findEndPoint(endpointId);
 		String type = endpoint.getType().trim().toLowerCase();
 		switch(type){
 		case ENDPOINT_TYPE_FILE:
-			processer = new FileEndpointProcesser(endpoint.getProperty().get(0).getValue());
+			processer = new FileEndpointProcessor(endpoint.getProperty().get(0).getValue());
 			break;
 		case ENDPOINT_TYPE_URL:
-			processer = new FileEndpointProcesser(endpoint.getProperty().get(0).getValue());
+			processer = new FileEndpointProcessor(endpoint.getProperty().get(0).getValue());
 			break;
 		default:
 			throw new RuntimeException("Error Endpoint Type.");

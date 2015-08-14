@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import team.afgm.rdfom.context.ContextConfig;
-import team.afgm.rdfom.endpoint.EndpointProcesser;
+import team.afgm.rdfom.endpoint.EndpointProcessor;
+import team.afgm.rdfom.mapper.Ask;
 import team.afgm.rdfom.mapper.MapperConfig;
 import team.afgm.rdfom.mapper.Result;
 import team.afgm.rdfom.mapper.ResultMap;
@@ -29,12 +30,12 @@ import team.afgm.rdfom.util.StringUtil;
 public class MappingSessionImpl implements MappingSession{
 	private ContextConfig contextConfig;
 	private Map<String, MapperConfig> mapperConfigMap;
-	private EndpointProcesser endpointProcesser;
+	private EndpointProcessor endpointProcessor;
 	
-	public MappingSessionImpl(ContextConfig contextConfig, Map<String, MapperConfig> mapperConfigMap, EndpointProcesser endpointProcesser){
+	public MappingSessionImpl(ContextConfig contextConfig, Map<String, MapperConfig> mapperConfigMap, EndpointProcessor endpointProcesser){
 		this.contextConfig = contextConfig;
 		this.mapperConfigMap = mapperConfigMap;
-		this.endpointProcesser = endpointProcesser;
+		this.endpointProcessor = endpointProcesser;
 		
 	}
 	
@@ -118,7 +119,7 @@ public class MappingSessionImpl implements MappingSession{
 				classType = (Class<T>)Class.forName("java.lang." + resultType);
 			}
 			
-			ResultSet resultSet = endpointProcesser.executeSelect(stmt.getQuery());
+			ResultSet resultSet = endpointProcessor.executeSelect(stmt.getQuery());
 			
 			return mapper.readValueAsList(resultSet, classType);	//반환
 			
@@ -165,8 +166,21 @@ public class MappingSessionImpl implements MappingSession{
 			throw new RuntimeException("잘못된 네임스페이스." + e.getMessage());
 		}
 		
+		Ask ask = findAsk(namespace, realId);
 		
-		return false;
+		SparqlStatement stmt;
+		try{
+			stmt = SparqlStatementBuilder.newInstance(ask.getQuery(), 
+													  contextConfig.getNamespaces().getNamespaces());
+			if(paramMap != null)
+				stmt.setValue(paramMap);
+			
+		}catch(Exception e){
+			e.printStackTrace(System.out);
+			throw new RuntimeException("Error SparqlStatement setup. " + e.getMessage());
+		}
+		
+		return endpointProcessor.executeAsk(stmt.getQuery());
 	}
 
 	protected String[] splitNamespaceAndId(String id){
@@ -189,6 +203,14 @@ public class MappingSessionImpl implements MappingSession{
 			
 		}catch(Exception e){
 			throw new RuntimeException("Error finding select with namespace and id. " + e.getMessage());
+		}
+	}
+	
+	protected Ask findAsk(String namespace, String queryId){
+		try{
+			return mapperConfigMap.get(namespace).findAsk(queryId);
+		}catch(Exception e){
+			throw new RuntimeException("Error finding ask with namespace and id. " + e.getMessage());
 		}
 	}
 
