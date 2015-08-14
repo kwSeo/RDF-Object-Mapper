@@ -128,7 +128,7 @@ public class MappingSessionImpl implements MappingSession{
 		}
 	}
 
-
+	@Override
 	public <T> List<T> selectList(String id, Object param){
 		return this.selectList(id, toMap(param));
 	}
@@ -138,6 +138,36 @@ public class MappingSessionImpl implements MappingSession{
 		return this.selectList(id, null);
 	}
 	
+
+	@Override
+	public boolean ask(String id) {
+		
+		return ask(id, null);
+	}
+
+	@Override
+	public boolean ask(String id, Object param) {
+		return ask(id, toMap(param));
+	}
+
+	//TODO ask 메서드 만들어야함
+	@Override
+	public boolean ask(String id, Map<String, Object> paramMap) {
+		String[] splitedId;
+		String namespace;
+		String realId;
+		try{
+			splitedId = splitNamespaceAndId(id);
+			namespace = splitedId[0];
+			realId = splitedId[1];
+		}catch(Exception e){
+			e.printStackTrace(System.out);
+			throw new RuntimeException("잘못된 네임스페이스." + e.getMessage());
+		}
+		
+		
+		return false;
+	}
 
 	protected String[] splitNamespaceAndId(String id){
 		int i = id.lastIndexOf(".");
@@ -199,4 +229,6 @@ public class MappingSessionImpl implements MappingSession{
 		
 		return mapper;
 	}
+	
+	
 }

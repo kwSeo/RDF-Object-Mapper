@@ -13,21 +13,27 @@ public class MapperConfigImpl implements MapperConfig{
 	private String namespace;
 	private Map<String, ResultMap> resultMaps;
 	private Map<String, Select> selects;
+	private Map<String, Ask> asks;
 	
 	public MapperConfigImpl(){
 	}
-	
+
 	/**
 	 * 
 	 * @param namespace
 	 * @param resultMaps
 	 * @param selects
+	 * @param asks
 	 */
-	public MapperConfigImpl(String namespace, Map<String, ResultMap> resultMaps, Map<String, Select> selects) {
+	public MapperConfigImpl(String namespace, 
+							Map<String, ResultMap> resultMaps, 
+							Map<String, Select> selects,
+							Map<String, Ask> asks) {
 		super();
 		this.namespace = namespace;
 		this.resultMaps = resultMaps;
 		this.selects = selects;
+		this.asks = asks;
 	}
 
 	@Override
@@ -65,5 +71,11 @@ public class MapperConfigImpl implements MapperConfig{
 		return new ArrayList<>(resultMaps.values());
 	}
 
+	@Override
+	public Ask findAsk(String id) {
+		return asks.get(id);
+	}
+
+	
 	
 }

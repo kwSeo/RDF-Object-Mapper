@@ -25,7 +25,8 @@ public class MapperConfigFactory {
 		MapperConfigImpl config = new MapperConfigImpl(
 				xml.getString("//@namespace"),
 				ResultMapParser.parse(xml),
-				SelectParser.parse(xml));
+				SelectParser.parse(xml),
+				AskParser.parse(xml));
 		
 		return config;
 	}
