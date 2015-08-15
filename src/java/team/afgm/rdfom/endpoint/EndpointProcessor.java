@@ -11,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.Model;
  * @author kwSeo
  *
  */
-public abstract class EndpointProcesser {
+public abstract class EndpointProcessor {
 	/**
 	 * 파라미터로 전달하는 SPARQL를 통해 쿼리를 실행한다.
 	 * SELECT는 W3C에서 정의한 SPARQL의 결과값의 포맷표준이 존재한다.

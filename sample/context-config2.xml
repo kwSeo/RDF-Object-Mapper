@@ -26,5 +26,6 @@
 	<mappers>
 		<mapper resource="sample/mapper-sample.xml"/>
 		<mapper resource="sample/mapper-sample2.xml"/>
+		<mapper resource="sample/mapper-sample-ask.xml"/>
 	</mappers>
 </configuration>

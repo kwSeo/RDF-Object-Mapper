@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import team.afgm.rdfom.endpoint.FileEndpointProcesser;
+import team.afgm.rdfom.endpoint.FileEndpointProcessor;
 import team.afgm.rdfom.mapper.Result;
 import team.afgm.rdfom.objectmapper.MappingHandler;
 import team.afgm.rdfom.objectmapper.ObjectMapper;
@@ -29,7 +29,7 @@ public class ObjectMapperTest {
 		 * 준비된 test.rdf파일에서 SPARQL 쿼리를 수행한다.
 		 * FileEndpointProcesser를 통해 쿼리 결과값을 XML Document 객체 또는 XML String으로 받을 수 있다.
 		 */
-		FileEndpointProcesser pro = new FileEndpointProcesser("sample/test.rdf");
+		FileEndpointProcessor pro = new FileEndpointProcessor("sample/test.rdf");
 
 		ResultSet resultSet = pro.executeSelect(query);
 				
@@ -53,7 +53,7 @@ public class ObjectMapperTest {
 		results.add(result2);
 		
 		mapper.setMappingHandler(new TestMappingHandler(results));
-		FileEndpointProcesser pro = new FileEndpointProcesser("sample/test.rdf");
+		FileEndpointProcessor pro = new FileEndpointProcessor("sample/test.rdf");
 		ResultSet resultSet = pro.executeSelect(query);
 		
 		TestBean2 bean2 = mapper.readValue(resultSet, TestBean2.class);

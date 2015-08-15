@@ -10,6 +10,7 @@ import java.util.List;
 public interface MapperConfig {
 	public String getNamespace();
 	public Select findSelect(String id);
+	public Ask findAsk(String id);
 	public List<Select> getSelects();
 	public ResultMap findResultMap(String id);
 	public List<ResultMap> getResultMaps();

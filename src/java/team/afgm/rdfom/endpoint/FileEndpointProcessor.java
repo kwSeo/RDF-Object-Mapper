@@ -22,18 +22,18 @@ import team.afgm.rdfom.sparql.ResultSetFactory;
  * @author kwSeo
  *
  */
-public class FileEndpointProcesser extends EndpointProcesser{
+public class FileEndpointProcessor extends EndpointProcessor{
 	private String path;
 	private Model model;
 
-	public FileEndpointProcesser(String path) {
+	public FileEndpointProcessor(String path) {
 		this.path = path;
 		InputStream is = FileManager.get().open(path);
 		this.model = ModelFactory.createDefaultModel();
 		this.model.read(is, null);
 	}
 
-	public FileEndpointProcesser(String path, Model model){
+	public FileEndpointProcessor(String path, Model model){
 		this.path = path;
 		this.model = model;
 	}
@@ -91,6 +91,7 @@ public class FileEndpointProcesser extends EndpointProcesser{
 		try(QueryExecution exec = QueryExecutionFactory.create(query, model)){
 			return exec.execAsk();
 		}catch(Exception e){
+			e.printStackTrace(System.err);
 			throw new QueryExecutionException("Error executing ASK");
 		}
 	}

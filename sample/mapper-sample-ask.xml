@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	SYSTEM "mapper-prototype.dtd">
+
+<mapper namespace="afgm.seo.testAsk">
+	<ask id="testAsk1">
+		ask {
+			?x info:age 25
+		}
+	</ask>
+	
+	<ask id="testAsk2">
+		ask {
+			?x info:age #{age}
+		}
+	</ask>
+	
+</mapper>	

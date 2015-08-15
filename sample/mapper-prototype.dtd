@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT mapper (resultMap*, select*)>
+<!ELEMENT mapper (resultMap*, select*, ask*)>
 	<!ATTLIST mapper namespace CDATA "default">
 	
 	<!ELEMENT resultMap (result+)>
@@ -14,4 +14,5 @@
 		<!ATTLIST select id CDATA #REQUIRED>
 		<!ATTLIST select resultType CDATA #REQUIRED>
 
-			
+	<!ELEMENT ask (#PCDATA)>
+		<!ATTLIST ask id CDATA #REQUIRED>
