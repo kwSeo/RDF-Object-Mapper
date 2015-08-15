@@ -18,5 +18,5 @@ public interface MappingSession {
 	
 	public boolean ask(String id);
 	public boolean ask(String id, Object param);
-	public boolean ask(String id, Map<String, Object> paramMap);
+	public boolean ask(String id, Map<String, ?> paramMap);
 }

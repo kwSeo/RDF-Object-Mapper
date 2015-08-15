@@ -8,4 +8,11 @@
 			?x info:age 25
 		}
 	</ask>
+	
+	<ask id="testAsk2">
+		ask {
+			?x info:age #{age}
+		}
+	</ask>
+	
 </mapper>	

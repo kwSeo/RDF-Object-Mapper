@@ -151,9 +151,8 @@ public class MappingSessionImpl implements MappingSession{
 		return ask(id, toMap(param));
 	}
 
-	//TODO ask 메서드 만들어야함
 	@Override
-	public boolean ask(String id, Map<String, Object> paramMap) {
+	public boolean ask(String id, Map<String, ?> paramMap) {
 		String[] splitedId;
 		String namespace;
 		String realId;
@@ -184,11 +183,15 @@ public class MappingSessionImpl implements MappingSession{
 	}
 
 	protected String[] splitNamespaceAndId(String id){
-		int i = id.lastIndexOf(".");
-		String[] strs = new String[2];
-		strs[0] = id.substring(0, i);
-		strs[1] = id.substring(i+1, id.length());
-		return strs;
+		try{
+			int i = id.lastIndexOf(".");
+			String[] strs = new String[2];
+			strs[0] = id.substring(0, i);
+			strs[1] = id.substring(i+1, id.length());
+			return strs;
+		}catch(Exception e){
+			throw new RuntimeException("Invalid namespace and id. " + e.getMessage());
+		}
 	}
 	
 	protected boolean isResultMap(String namespace, String resultMapId){
@@ -214,7 +217,7 @@ public class MappingSessionImpl implements MappingSession{
 		}
 	}
 
-	protected <T> Map<String, Object> toMap(T obj){
+	protected <T> Map<String, ?> toMap(T obj){
 		Map<String, Object> map = new HashMap<>();
 		
 		Class<?> classInfo = obj.getClass();
@@ -230,6 +233,7 @@ public class MappingSessionImpl implements MappingSession{
 				map.put(fieldName, returnValue);
 				
 			}catch(Exception e){
+				e.printStackTrace(System.err);
 				continue;
 			}
 		}

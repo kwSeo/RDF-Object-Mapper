@@ -91,6 +91,7 @@ public class FileEndpointProcessor extends EndpointProcessor{
 		try(QueryExecution exec = QueryExecutionFactory.create(query, model)){
 			return exec.execAsk();
 		}catch(Exception e){
+			e.printStackTrace(System.err);
 			throw new QueryExecutionException("Error executing ASK");
 		}
 	}
