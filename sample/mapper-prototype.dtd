@@ -2,10 +2,14 @@
 <!ELEMENT mapper (resultMap*, select*, ask*)>
 	<!ATTLIST mapper namespace CDATA "default">
 	
-	<!ELEMENT resultMap (result+)>
+	<!ELEMENT resultMap (result+, relation*)>
 		<!ATTLIST resultMap id CDATA #REQUIRED>
 		<!ATTLIST resultMap type CDATA #REQUIRED>
 		
+		<!ELEMENT relation (result+)>
+			<!ATTLIST relation name CDATA #REQUIRED>
+			<!ATTLIST relation type CDATA #REQUIRED>
+			
 		<!ELEMENT result EMPTY> 
 			<!ATTLIST result column CDATA #REQUIRED>
 			<!ATTLIST result field CDATA #REQUIRED>

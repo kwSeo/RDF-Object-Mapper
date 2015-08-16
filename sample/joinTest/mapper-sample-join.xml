@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "mapper-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/mapper-config.dtd">
+
+<mapper namespace="afgm.seo.join.test">
+	<resultMap id="resultMapJoin" type="team.afgm.rdfom.mappingsession.test.Person">
+		<result column="age" field="age"/>
+		<relation name="name" type="test.bean.Name">
+			<result column="first" field="firstName"/>
+			<result column="last" field="lastName"/>
+		</relation>
+	</resultMap>
+</mapper>	
