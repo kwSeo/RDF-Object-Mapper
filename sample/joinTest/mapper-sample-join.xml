@@ -4,7 +4,7 @@
 <mapper namespace="afgm.seo.join.test">
 	<resultMap id="resultMapJoin" type="team.afgm.rdfom.mappingsession.test.Person">
 		<result column="age" field="age"/>
-		<relation name="name" type="test.bean.Name">
+		<relation id="name" type="test.bean.Name">
 			<result column="first" field="firstName"/>
 			<result column="last" field="lastName"/>
 		</relation>

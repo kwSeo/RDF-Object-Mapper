@@ -7,7 +7,7 @@
 		<!ATTLIST resultMap type CDATA #REQUIRED>
 		
 		<!ELEMENT relation (result+)>
-			<!ATTLIST relation name CDATA #REQUIRED>
+			<!ATTLIST relation id CDATA #REQUIRED>
 			<!ATTLIST relation type CDATA #REQUIRED>
 			
 		<!ELEMENT result EMPTY> 

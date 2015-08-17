@@ -4,8 +4,6 @@
 <mapper namespace="afgm.seo.test">
 	<resultMap type="team.afgm.bean.Person" id="personMap">
 		<result column="fn" field="name"/>
-		<result column="age" field="age"/>
-		<result column="tel" field="tel"/>
 	</resultMap>
 
 	<select id="testSelect" resultType="personMap">
