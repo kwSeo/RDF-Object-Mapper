@@ -1,6 +1,6 @@
 package team.afgm.rdfom.mappingsession.test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import team.afgm.bean.JoinOne;
 import team.afgm.bean.Person;
 import team.afgm.rdfom.session.MappingSession;
 import team.afgm.rdfom.session.MappingSessionFactory;
@@ -40,6 +41,18 @@ public class MappingSessionJoinTest {
 		}
 	}
 
+	@Test
+	public void testJoin1(){
+		MappingSession session = factory.createMappingSession("testFile2");
+		List<JoinOne> joinOnes = session.selectList("afgm.seo.join.test.testJoin1");
+		assertNotNull(joinOnes);
+		assertFalse(joinOnes.isEmpty());
+		for(JoinOne joinOne : joinOnes){
+			System.out.println(StringUtil.toString(joinOne));
+			System.out.println("\t" + StringUtil.toString(joinOne.getN()));
+		}
+	}
+	
 	@BeforeClass
 	public static void startJoinTest(){
 		System.out.println("MappingSessionJoinTest start==========================================");

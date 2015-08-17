@@ -8,6 +8,7 @@ import java.util.List;
 
 import team.afgm.rdfom.objectmapper.exception.ObjectMapperException;
 import team.afgm.rdfom.sparql.ResultSet;
+import team.afgm.rdfom.util.StringUtil;
 
 /**
  * TODO 메서드의 파라미터로 ResultSet을 쓰는게 과연 옳은가?
@@ -88,7 +89,7 @@ public class ObjectMapper {
 						Class<?> childClassType = Class.forName(childHandler.getType());
 						Object childInstance = newInstance(resultSet, childClassType, childHandler);
 						
-						callSetter(instance, nameId, childInstance);
+						callSetter(instance, StringUtil.toCamelCaseSimple(nameId), childInstance);
 					}
 				}
 				
@@ -126,6 +127,13 @@ public class ObjectMapper {
 	
 	public void callSetter(Object instance, String name, Object param) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Class<?> classType = instance.getClass();
+		try{
+			//종종 파라미터가 없는 경우가 있다. 예로들어 OPTIONAL 문법을 사용할 경우.
+			Class<?> paramType = param.getClass();
+		}catch(Exception e){
+			return;
+		}
+		
 		Method method = classType.getMethod(
 				"set" + name,		//DefaultMappingHandler에 의해 컬럼명이 변경됨. 기본값은 맨 앞글자만 대분자로 바꿈.
 				param.getClass());

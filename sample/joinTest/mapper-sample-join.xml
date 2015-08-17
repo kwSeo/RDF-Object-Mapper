@@ -9,4 +9,24 @@
 			<result column="last" field="lastName"/>
 		</relation>
 	</resultMap>
+	
+	<resultMap id="test2Join" type="team.afgm.bean.JoinOne">
+		<result column="fn" field="fn"/>
+		<result column="age" field="age"/>
+		<relation id="n" type="team.afgm.bean.JoinTwo">
+			<result column="family" field="family"/>
+			<result column="given" field="given"/>
+		</relation>
+	</resultMap>
+	
+	<select id="testJoin1" resultType="test2Join">
+		SELECT DISTINCT ?fn ?age ?family ?given
+		WHERE {
+			?x  vcard:FN ?fn;
+				vcard:N  ?detailName.
+			?detailName vcard:Family ?family;
+				vcard:Given ?given.
+			OPTIONAL{ ?x info:age ?age.}
+		}
+	</select>
 </mapper>	
