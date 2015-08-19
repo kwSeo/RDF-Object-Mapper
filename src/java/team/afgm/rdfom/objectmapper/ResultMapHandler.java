@@ -1,10 +1,12 @@
 package team.afgm.rdfom.objectmapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import team.afgm.rdfom.mapper.Result;
+import team.afgm.rdfom.mapper.ResultMap;
 import team.afgm.rdfom.util.StringUtil;
 
 /**
@@ -13,22 +15,59 @@ import team.afgm.rdfom.util.StringUtil;
  *
  */
 public class ResultMapHandler implements MappingHandler{
-	private Map<String, String> map = new HashMap<>();
+	private ResultMap resultMap;
+	private Map<String, String> columnMap = new HashMap<>();
 	
 	public ResultMapHandler(List<Result> results){
-//		Java8 문법을 써도 될까?
-//		results.forEach((action)->{
-//			map.put(action.getColumn(), action.getField());
-//		});
 		
 		for(Result result : results){
-			map.put(result.getColumn(), result.getField());
+			columnMap.put(result.getColumn(), result.getField());
 		}
+	}
+	
+	public ResultMapHandler(ResultMap resultMap){
+		this(resultMap.getResults());
+		this.resultMap = resultMap;
 	}
 	
 	@Override
 	public String convert(String columnName) {
-		return StringUtil.toCamelCaseSimple(map.get(columnName));
+		return StringUtil.toCamelCaseSimple(columnMap.get(columnName));
+	}
+
+	@Override
+	public boolean hasChild() {
+		return !(resultMap != null && resultMap.getChildResultMap().isEmpty());
+	}
+
+	@Override
+	public List<MappingHandler> getChildMappingHandlers() {
+		List<ResultMap> childResultMaps = resultMap.getChildResultMap();
+		List<MappingHandler> childHandlers = new ArrayList<>(childResultMaps.size());
+		for(ResultMap childResultMap : childResultMaps){
+			childHandlers.add(new ResultMapHandler(childResultMap));
+		}
+		return childHandlers;
+	}
+
+	@Override
+	public List<String> getColumns() {
+		return new ArrayList<>(columnMap.keySet());
+	}
+
+	@Override
+	public List<String> getFields() {
+		return new ArrayList<>(columnMap.values());
+	}
+
+	@Override
+	public String getType() {
+		return resultMap.getType();
+	}
+	
+	@Override
+	public String getId(){
+		return resultMap.getId();
 	}
 	
 }

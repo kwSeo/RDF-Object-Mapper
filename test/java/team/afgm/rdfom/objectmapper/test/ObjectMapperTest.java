@@ -1,16 +1,15 @@
 package team.afgm.rdfom.objectmapper.test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 
 import team.afgm.rdfom.endpoint.FileEndpointProcessor;
 import team.afgm.rdfom.mapper.Result;
-import team.afgm.rdfom.objectmapper.MappingHandler;
+import team.afgm.rdfom.mapper.ResultMap;
 import team.afgm.rdfom.objectmapper.ObjectMapper;
+import team.afgm.rdfom.objectmapper.ResultMapHandler;
 import team.afgm.rdfom.sparql.ResultSet;
 import team.afgm.rdfom.util.StringUtil;
 
@@ -35,7 +34,7 @@ public class ObjectMapperTest {
 				
 		ObjectMapper mapper = new ObjectMapper();
 		TestBean instance = mapper.readValue(resultSet, TestBean.class);
-		System.out.println(instance.toString());
+		System.out.println("TestBean : " + instance.toString());
 
 	}
 	
@@ -52,27 +51,15 @@ public class ObjectMapperTest {
 		result2.setField("description");
 		results.add(result2);
 		
-		mapper.setMappingHandler(new TestMappingHandler(results));
+		ResultMap resultMap = new ResultMap();
+		resultMap.setResults(results);
+		ResultMapHandler handler = new ResultMapHandler(resultMap);
+		
 		FileEndpointProcessor pro = new FileEndpointProcessor("sample/test.rdf");
 		ResultSet resultSet = pro.executeSelect(query);
 		
-		TestBean2 bean2 = mapper.readValue(resultSet, TestBean2.class);
-		System.out.println(StringUtil.toString(bean2));
+		TestBean2 bean2 = mapper.readValue(resultSet, TestBean2.class, handler);
+		System.out.println("TestBean2 : " + StringUtil.toString(bean2));
 	}
 	
-	public static class TestMappingHandler implements MappingHandler{
-		private Map<String, String> map = new HashMap<>();
-		
-		public TestMappingHandler(List<Result> results){
-			results.forEach((action)->{
-				map.put(action.getColumn(), action.getField());
-			});
-		}
-		
-		@Override
-		public String convert(String columnName) {
-			return StringUtil.toCamelCaseSimple(map.get(columnName));
-		}
-		
-	}
 }

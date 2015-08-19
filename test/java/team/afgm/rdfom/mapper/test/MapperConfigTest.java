@@ -1,5 +1,7 @@
 package team.afgm.rdfom.mapper.test;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import org.junit.Test;
@@ -35,5 +37,13 @@ public class MapperConfigTest {
 				System.out.println(StringUtil.toString(result));
 		}
 		
+	}
+	
+	@Test
+	public void testResultMaps(){
+		MapperConfig mapperConfig = MapperConfigFactory.get().createMapperConfig("sample/joinTest/mapper-sample-join.xml");
+		List<ResultMap> relation = mapperConfig.findResultMap("resultMapJoin").getChildResultMap();
+		assertTrue(relation.size() > 0);
+		System.out.println("Field : " + relation.get(0).getResults().get(0).getField());
 	}
 }

@@ -21,19 +21,36 @@ public class ResultMapParser {
 		NodeList list = xml.getNodeList("//resultMap");
 		int length = list.getLength();
 		for(int i=0 ; i<length ; i++){
-			
-			ResultMap resultMap = new ResultMap();
 			XMLManager subXml = new XMLManager(list.item(i));
-			List<Result> results = parseResults(new XMLManager(list.item(i)));
-			String id = subXml.getString("@id");
-			resultMap.setId(id);
-			resultMap.setResults(results);
-			resultMap.setType(subXml.getString("@type"));
+			ResultMap resultMap = parseResultMap(subXml);
 			
-			map.put(id, resultMap);
+			NodeList relationList = subXml.getNodeList("relation");
+			int relationLength = relationList.getLength();
+			List<ResultMap> childList = new ArrayList<>();
+			
+			for(int j=0 ; j<relationLength ; j++){
+				XMLManager relationXml = new XMLManager(relationList.item(j));
+				ResultMap relation = parseResultMap(relationXml);	//relation element랑 resultMap element랑 속성이 같음. 재귀적으로 반복
+				childList.add(relation);
+			}
+			
+			resultMap.setChildResultMap(childList);
+			map.put(resultMap.getId(), resultMap);
 		}
 		
 		return map;
+	}
+	
+	public static ResultMap parseResultMap(XMLManager xml){
+		ResultMap resultMap = new ResultMap();
+		
+		List<Result> results = parseResults(xml);
+		String id = xml.getString("@id");
+		resultMap.setId(id);
+		resultMap.setResults(results);
+		resultMap.setType(xml.getString("@type"));
+		
+		return resultMap;
 	}
 	
 	public static List<Result> parseResults(XMLManager xml){

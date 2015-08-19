@@ -106,12 +106,12 @@ class Result{
 @XmlRootElement(name="binding")
 @XmlType(propOrder={"uri", "bnode", "literal"})
 class Binding{
-	private String uri="";
-	private String bnode="";
-	private String name="";
+	private String uri;
+	private String bnode;
+	private String name;
 	private Literal literal;
 	
-	private String type="";
+	private String type;
 	
 	@XmlElement(name="uri")
 	public void setUri(String uri){
