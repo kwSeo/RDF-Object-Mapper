@@ -3,7 +3,6 @@ package team.afgm.rdfom.objectmapper;
 import java.util.List;
 
 import team.afgm.rdfom.sparql.ResultSet;
-import team.afgm.rdfom.util.StringUtil;
 
 /**
  * 기본 매핑 헨들러는 인자로 전달받은 컬럼명을 그대로 반환한다.
@@ -20,7 +19,7 @@ public class DefaultMappingHandler implements MappingHandler{
 	
 	@Override
 	public String convert(String columnName){
-		return StringUtil.toCamelCaseSimple(columnName);
+		return columnName;
 	}
 
 	@Override
