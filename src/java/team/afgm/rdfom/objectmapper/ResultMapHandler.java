@@ -32,7 +32,7 @@ public class ResultMapHandler implements MappingHandler{
 	
 	@Override
 	public String convert(String columnName) {
-		return StringUtil.toCamelCaseSimple(columnMap.get(columnName));
+		return columnMap.get(columnName);
 	}
 
 	@Override

@@ -41,6 +41,10 @@ public class MappingSessionJoinTest {
 		}
 	}
 
+	/**
+	 * testFile2는 'sample/joinTest/test2.rdf'파일을 의미한다.
+	 * afgm.seo.join.test네임스페이스는 mapper-sample.join.xml을 의미한다.
+	 */
 	@Test
 	public void testJoin1(){
 		MappingSession session = factory.createMappingSession("testFile2");
@@ -53,6 +57,10 @@ public class MappingSessionJoinTest {
 		}
 	}
 	
+	@Test
+	public void testJoinDetail(){
+		MappingSession session = factory.createMappingSession("testFile2");
+	}
 	@BeforeClass
 	public static void startJoinTest(){
 		System.out.println("MappingSessionJoinTest start==========================================");
