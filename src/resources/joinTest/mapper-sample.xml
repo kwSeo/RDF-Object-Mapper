@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "mapper-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/mapper-config.dtd">
+
+<mapper namespace="afgm.seo.test">
+	<resultMap type="team.afgm.bean.Person" id="personMap">
+		<result column="fn" field="name"/>
+	</resultMap>
+
+	<select id="testSelect" resultType="personMap">
+		SELECT ?fn
+		WHERE {
+			?x 	vcard:FN ?fn.
+		}
+	</select>
+	
+	<select id="testSelect2" resultType="String">
+		SELECT ?name
+		WHERE {
+			?x 	a 		hc:Person;
+				hc:name	?name.
+		}
+	</select>
+	
+	<select id="testSelect3" resultType="String">
+		select distinct ?Concept where {[] a ?Concept} LIMIT 100
+	</select>
+</mapper>	
+	
