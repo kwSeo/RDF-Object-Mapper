@@ -4,12 +4,14 @@ public class ContextConfigImpl implements ContextConfig {
 	private Endpoints endpoints;
 	private Namespaces namespaces;
 	private MapperResources mapperResources;
+	private Aliases aliases;
 	
 
-	public ContextConfigImpl(Endpoints endpoints, Namespaces namespaces, MapperResources mapperResources) {
+	public ContextConfigImpl(Endpoints endpoints, Namespaces namespaces, MapperResources mapperResources, Aliases aliases) {
 		this.endpoints = endpoints;
 		this.namespaces = namespaces;
 		this.mapperResources = mapperResources;
+		this.aliases = aliases;
 	}
 
 	@Override
@@ -40,6 +42,15 @@ public class ContextConfigImpl implements ContextConfig {
 	}
 
 	@Override
+	public Aliases getAliases() {
+		return aliases;
+	}
+	
+	public void setAliases(Aliases aliases) {
+		this.aliases = aliases;
+	}
+
+	@Override
 	public Endpoint findEndPoint(String id) {
 		return endpoints.findEndpoint(id);
 	}
@@ -52,5 +63,10 @@ public class ContextConfigImpl implements ContextConfig {
 	@Override
 	public MapperResource findMapperResource(int index) {
 		return mapperResources.getMapperResource(index);
+	}
+
+	@Override
+	public Alias findAlias(String id) {
+		return aliases.findAlias(id);
 	}
 }

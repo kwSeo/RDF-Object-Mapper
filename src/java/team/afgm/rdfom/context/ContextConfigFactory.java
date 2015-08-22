@@ -19,7 +19,8 @@ public class ContextConfigFactory {
 		return new ContextConfigImpl(
 					EndpointsParser.parse(xml),
 					NamespacesParser.parse(xml),
-					MapperResourcesParser.parse(xml)
+					MapperResourcesParser.parse(xml),
+					AliasesParser.parse(xml)
 				);
 	}
 

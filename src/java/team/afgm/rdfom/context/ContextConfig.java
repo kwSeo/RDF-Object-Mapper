@@ -13,4 +13,8 @@ public interface ContextConfig {
 	public Namespaces getNamespaces();
 	
 	public MapperResources getMapperResources();
+	
+	public Aliases getAliases();
+	
+	public Alias findAlias(String id);
 }
