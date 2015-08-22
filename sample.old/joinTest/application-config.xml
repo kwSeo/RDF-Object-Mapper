@@ -5,6 +5,9 @@
 		<endpoint id="testFile2" type="file">
 			<property name="path">sample/joinTest/test2.rdf</property>
 		</endpoint>	
+		<endpoint id="testFile3" type="file">
+			<property name="path">sample/joinTest/test3.rdf</property>
+		</endpoint>
 	</endpoints>
 	
 	<namespaces>
@@ -13,6 +16,7 @@
 		<namespace prefix="vcard" url="http://www.w3.org/2001/vcard-rdf/3.0#"/>
 		<namespace prefix="info" url="http://somewhere/peopleInfo#"/>
 		<namespace prefix="xsd" url="http://www.w3.org/2001/XMLSchema#"/>
+		<namespace prefix="test" url="http://afgm.org/test#"/>
 	</namespaces>
 	
 	<mappers>
@@ -20,5 +24,6 @@
 		<mapper resource="sample/joinTest/mapper-sample2.xml"/>
 		<mapper resource="sample/joinTest/mapper-sample-ask.xml"/>
 		<mapper resource="sample/joinTest/mapper-sample-join.xml"/>
+		<mapper resource="sample/joinTest/mapper-sample-tester.xml"/>
 	</mappers>
 </configuration>

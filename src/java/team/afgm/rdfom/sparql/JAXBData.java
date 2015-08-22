@@ -1,5 +1,7 @@
 package team.afgm.rdfom.sparql;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -156,10 +158,39 @@ class Binding{
 	}
 	
 	public Object getLiteralV(){
-		if(literal.getDatatype().equals("http://www.w3.org/2001/XMLSchema#integer"))
-			return Integer.parseInt(literal.getLiteral());
-		else
-			return literal.getLiteral();
+		String dataTypeArr[] = literal.getDatatype().split("[:#]");
+		String dataType = dataTypeArr[dataTypeArr.length-1];			//데이터타입얻기. 마지막 부분이 데이터타입을 나타낸다.
+		String literalValue = literal.getLiteral();		
+		Object value = null;
+		
+		//Java7부터 되는 기능
+		switch(dataType){
+		case "integer": case "int":
+			value = Integer.parseInt(literalValue);
+			break;
+		case "double":
+			value = Double.parseDouble(literalValue);
+			break;
+		case "long":
+			value = Long.parseLong(literalValue);
+			break;
+		case "byte":
+			value = Byte.parseByte(literalValue);
+			break;
+		case "short":
+			value = Short.parseShort(literalValue);
+			break;
+		case "float":
+			value = Float.parseFloat(literalValue);
+			break;
+		case "boolean":
+			value = Boolean.parseBoolean(literalValue);
+			break;
+		default:
+			value = literalValue;
+		}
+		
+		return value;
 	}
 	
 	public Object getValue(){
@@ -171,7 +202,7 @@ class Binding{
 		case "literal":
 			return getLiteralV();
 		default:
-			throw new RuntimeException("Error JAXBData getValue.");
+			throw new RuntimeException("Error JAXBData in getValue. ");
 		}
 	}
 }
@@ -179,7 +210,7 @@ class Binding{
 @XmlRootElement(name="literal")
 class Literal{
 	private String literal;
-	private String datatype = "string";
+	private String datatype = "xsd:string";
 	
 	public String getLiteral() {
 		return literal;
@@ -197,6 +228,4 @@ class Literal{
 	public void setDatatype(String datatype) {
 		this.datatype = datatype;
 	}
-	
-	
 }
