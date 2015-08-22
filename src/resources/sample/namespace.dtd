@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!ELEMENT configuration (endpoints, namespaces, mappers)>
+	<!ELEMENT endpoints (endpoint+)>
+		<!ELEMENT endpoint (property+)>
+			<!ATTLIST endpoint type (file|url) #REQUIRED>
+			<!ATTLIST endpoint default CDATA "false" >
+			<!ATTLIST endpoint id CDATA #REQUIRED>
+			<!ELEMENT property (#PCDATA)>
+				<!ATTLIST property name CDATA #REQUIRED>
+				
+	<!ELEMENT namespaces (namespace+)>
+		<!ELEMENT namespace EMPTY>
+			<!ATTLIST namespace prefix CDATA #REQUIRED>
+			<!ATTLIST namespace url CDATA #REQUIRED>
+	<!ELEMENT mappers (mapper+)>
+		<!ELEMENT mapper EMPTY>
+			<!ATTLIST mapper resource CDATA #REQUIRED>

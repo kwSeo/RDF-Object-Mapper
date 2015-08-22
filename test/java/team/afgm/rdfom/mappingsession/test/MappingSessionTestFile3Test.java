@@ -45,6 +45,12 @@ public class MappingSessionTestFile3Test {
 		}
 	}
 	
+	/**
+	 * 아래의 테스트는 JoinTester 객체에 제대로 매핑이 되는지 확인하기 위한 것이다. 
+	 * JoinTester 클래스는 모든 멤버필드들이 원시타입으로 선언되었으며 setter는 없고  getter만 정의되었다.
+	 * 또한 조인기능이 제대로 동작하는 확인하기 위해서 ResultMap을 통해 매핑설정이 되어있으며, 
+	 * JoinTester클래스는 내부적으로 SubJoinTester 클래스를 가지고 있다.
+	 */
 	@Test
 	public void test3Join(){
 		MappingSession session = factory.createMappingSession("testFile3");

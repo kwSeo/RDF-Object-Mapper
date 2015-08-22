@@ -1,4 +1,5 @@
 package team.afgm.rdfom.xml.parser;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -19,43 +19,77 @@ import team.afgm.rdfom.xml.exception.XmlBuildException;
  * 전달받은 XML경로(절대경로, 상대경로)릁 통해서 XML문서를 파싱하고 이를 XPath를 이용해서 접근한다.
  * XPath 표현식을 사용하여 해당하는 값을 문자열(String), 숫자(Integer, Double), 논리값(Boolean) 등으로 얻을 수 있다.
  * 
- * @author kwSeo(서경원)
+ * @author kwSeo
  * @date 2015-07-05
  *
  */
 public class XMLManager {
 	private Node doc;
-	private XPath xPath;
-	private String path;
+	private XPath xPath = XPathFactory.newInstance().newXPath();
 	
 	/**
-	 * 전달받은 XML 경로(path)를 통해서 Document 객체를 생성한다. 그리고 함께 XPath객체를 생성한다.
-	 * @param path
+	 * 전달받은 XML 경로(classpath)를 통해서 Document 객체를 생성한다. 그리고 함께 XPath객체를 생성한다.
+	 * @param path - XML파일 경로
 	 */
 	public XMLManager(String path){
-		try{
-			this.path = path;
-			this.doc = DocumentBuilderFactory
-					.newInstance()
-					.newDocumentBuilder()
-					.parse(path);	//InputSource에 대해서 좀 알아보자(InputSource는 상대경로가 안된다)
-			this.xPath = XPathFactory.newInstance().newXPath();
-			
-		}catch(Exception e){
-			throw new XmlBuildException("Error finding XML path.");
-		}
+		this(ClassLoader.getSystemClassLoader().getResourceAsStream(path));
 	}
 	
+	/**
+	 * 인자로 전달받은 노드를 루트노드로 하여 XMLManager를 생성한다.
+	 * @param rootNode - XML Node
+	 */
 	public XMLManager(Node rootNode){
-		this("", rootNode, XPathFactory.newInstance().newXPath());
+		this(rootNode, XPathFactory.newInstance().newXPath());
 	}
 	
+	/**
+	 * 
+	 * 인자로 전달받은 노드를 루트노드로하며 XPath를 사용하여 XMLManager를 생성한다.
+	 * @param path - 사용안함. 아무거나 줘도 된다.
+	 * @param rootNode - XML Node
+	 * @param xPath
+	 */
+	@Deprecated
 	public XMLManager(String path, Node rootNode, XPath xPath){
-		this.path = path;
 		this.doc = rootNode;
 		this.xPath = xPath;
 	}
 	
+	/**
+	 * 인자로 전달받은 노드를 루트노드로하며 XPath를 사용하여 XMLManager를 생성한다.
+	 * @param rootNode - XML Node
+	 * @param xPath
+	 */
+	public XMLManager(Node rootNode, XPath xPath){
+		this.doc = rootNode;
+		this.xPath = xPath;
+	}
+	
+	/**
+	 * 인자로 전달한 입력스트림을 통해 노드를 생성하여 XMLManager 객체를 생성한다.
+	 * XPath는 기본 XPath(XPathFactory.newInstance().newXPath())를 사용한다.
+	 * @param inputStream - XML input stream
+	 */
+	public XMLManager(InputStream inputStream) {
+		try {
+			this.doc = DocumentBuilderFactory
+					.newInstance()
+					.newDocumentBuilder()
+					.parse(inputStream);
+			
+		} catch (Exception e){
+			e.printStackTrace(System.err);
+			throw new XmlBuildException("Error parsing XML from input stream. " + e.getMessage());
+			
+		}
+	}
+
+	/**
+	 * 인자로 전달한 XPath 표현식을 통해 노드를 얻는다.
+	 * @param expr - XPath expression
+	 * @return Node - XML Node
+	 */
 	public Node getNode(String expr){
 		return (Node)evaluate(expr, doc, XPathConstants.NODE);
 	}
@@ -138,10 +172,6 @@ public class XMLManager {
 		}
 		
 		return nodes;
-	}
-	
-	public String getPath(){
-		return this.path;
 	}
 	
 	@Override

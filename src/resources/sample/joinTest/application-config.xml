@@ -24,5 +24,6 @@
 		<mapper resource="sample/joinTest/mapper-sample2.xml"/>
 		<mapper resource="sample/joinTest/mapper-sample-ask.xml"/>
 		<mapper resource="sample/joinTest/mapper-sample-join.xml"/>
+		<mapper resource="sample/joinTest/mapper-sample-tester.xml"/>
 	</mappers>
 </configuration>
