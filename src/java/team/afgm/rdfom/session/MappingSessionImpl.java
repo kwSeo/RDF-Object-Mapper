@@ -236,19 +236,18 @@ public class MappingSessionImpl implements MappingSession{
 		Class<?> classInfo = obj.getClass();
 		Field[] fields = classInfo.getDeclaredFields();
 		
-		for(Field field : fields){
-			String fieldName = field.getName();
-			String methodName = "get" + StringUtil.toCamelCaseSimple(fieldName);
-			
-			try{
-				Method method = classInfo.getMethod(methodName);
-				Object returnValue = method.invoke(obj);
-				map.put(fieldName, returnValue);
+		try{
+			for(Field field : fields){
+				String fieldName = field.getName();
+				field.setAccessible(true);
+				Object value = field.get(obj);
+				field.setAccessible(false);
 				
-			}catch(Exception e){
-				e.printStackTrace(System.err);
-				continue;
+				map.put(fieldName, value);
 			}
+		}catch(Exception e){
+			e.printStackTrace(System.err);
+			throw new RuntimeException("Error object parameter to map. " + e.getMessage());
 		}
 		
 		return map;
