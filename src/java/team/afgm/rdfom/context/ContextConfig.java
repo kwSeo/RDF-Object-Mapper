@@ -17,4 +17,6 @@ public interface ContextConfig {
 	public Aliases getAliases();
 	
 	public Alias findAlias(String id);
+	
+	public CacheElement getCache();
 }
