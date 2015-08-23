@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!ELEMENT configuration (endpoints, namespaces, mappers)>
+<!ELEMENT configuration (endpoints, namespaces, mappers, aliases?)>
 	<!ELEMENT endpoints (endpoint+)>
 		<!ELEMENT endpoint (property+)>
 			<!ATTLIST endpoint type (file|url) #REQUIRED>
@@ -15,3 +15,8 @@
 	<!ELEMENT mappers (mapper+)>
 		<!ELEMENT mapper EMPTY>
 			<!ATTLIST mapper resource CDATA #REQUIRED>
+			
+	<!ELEMENT aliases (alias+)>
+		<!ELEMENT alias EMPTY>
+			<!ATTLIST alias id CDATA #REQUIRED>
+			<!ATTLIST alias type CDATA #REQUIRED>

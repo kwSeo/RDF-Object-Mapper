@@ -12,6 +12,7 @@ public class ContextConfigTest {
 		ContextConfig config = ContextConfigFactory.getInstance().createContextConfig("sample/context-config.xml");
 		
 		System.out.println(StringUtil.toString(config));
+		System.out.println(config.findAlias("testAlias1").getType());
 		
 	}
 }
