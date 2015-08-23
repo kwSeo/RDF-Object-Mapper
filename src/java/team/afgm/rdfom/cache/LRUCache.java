@@ -31,6 +31,7 @@ public class LRUCache implements Cache{
 			Object removingKey = keyList.removeLast();
 			cacheMap.remove(removingKey);
 		}
+		keyList.addFirst(key);
 		cacheMap.put(key, value);
 	}
 

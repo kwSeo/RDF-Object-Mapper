@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration 
-	SYSTEM "/home/kwseo/git/RDF-Object-Mapper/src/resources/sample/namespace.dtd">
+	PUBLIC "context-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/context-config.dtd">
 	
 <configuration>
 	<endpoints>
