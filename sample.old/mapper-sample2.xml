@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	SYSTEM "mapper-prototype.dtd">
+
+<mapper namespace="afgm.seo.test2">
+	<resultMap id="resultMapOne" type="team.afgm.rdfom.mappingsession.test.Person">
+		<result column="n" field="name"/>
+		<result column="f" field="family"/>
+	</resultMap>
+	
+	<select id="selectOne" resultType="team.afgm.rdfom.mappingsession.test.Person">
+		select distinct ?name ?family
+		where {
+			?x vcard:N ?name;
+			   vcard:FN ?family.
+		}
+
+	</select>
+	
+	<select id="selectTwo" resultType="resultMapOne">
+		select distinct ?n ?f
+		where {
+			"AAA" vcard:N ?n;
+			   vcard:FN ?f.
+		}
+
+	</select>
+	
+	<select id="selectWithInt" resultType="team.afgm.rdfom.mappingsession.test.Person">
+		select distinct ?name ?age
+		where {
+			?name info:age ?age.
+		}
+	</select>
+	
+	<select id="selectWithParam" resultType="team.afgm.rdfom.mappingsession.test.Person">
+		select distinct ?age
+		where {
+			?x vcard:FN #{name};
+			   info:age ?age.
+		}
+	</select>
+	
+	<select id="selectAge" resultType="java.lang.Integer">
+		select distinct ?age
+		where {
+			?x info:age ?age.
+		}
+	</select>
+	
+	<select id="selectAge2" resultType="Integer">
+		select distinct ?age
+		where {
+			?x info:age ?age.
+		}
+	</select>
+</mapper>	
