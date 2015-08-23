@@ -15,4 +15,5 @@
 		}
 	</ask>
 	
+	<select id="testError" resultType="tea"> error </select>
 </mapper>	

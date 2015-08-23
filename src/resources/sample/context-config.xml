@@ -23,4 +23,10 @@
 		<mapper resource="sample/mapper-sample.xml"/>
 		<mapper resource="sample/mapper-sample2.xml"/>
 	</mappers>
+	
+	<aliases>
+		<alias id="testAlias1" type="team.afgm.rdfom.mappingsession.Person"/>
+		<alias id="testAlias2" type="team.afgm.rdfom.mappingsession.Person"/>
+	</aliases>
+	
 </configuration>
