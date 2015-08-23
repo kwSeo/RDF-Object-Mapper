@@ -1,5 +1,7 @@
 package team.afgm.rdfom.context;
 
+import java.io.InputStream;
+
 import team.afgm.rdfom.xml.parser.XMLManager;
 
 public class ContextConfigFactory {
@@ -21,6 +23,15 @@ public class ContextConfigFactory {
 					NamespacesParser.parse(xml),
 					MapperResourcesParser.parse(xml),
 					AliasesParser.parse(xml)
+				);
+	}
+	
+	public ContextConfig createContextConfig(InputStream inputStream){
+		XMLManager xml = new XMLManager(inputStream);
+		return new ContextConfigImpl(
+					EndpointsParser.parse(xml),
+					NamespacesParser.parse(xml),
+					MapperResourcesParser.parse(xml)
 				);
 	}
 

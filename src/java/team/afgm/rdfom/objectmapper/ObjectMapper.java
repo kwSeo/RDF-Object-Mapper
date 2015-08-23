@@ -1,13 +1,14 @@
 package team.afgm.rdfom.objectmapper;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import team.afgm.rdfom.objectmapper.exception.ObjectMapperException;
 import team.afgm.rdfom.sparql.ResultSet;
-import team.afgm.rdfom.util.StringUtil;
 
 /**
  * TODO 메서드의 파라미터로 ResultSet을 쓰는게 과연 옳은가?
@@ -15,14 +16,13 @@ import team.afgm.rdfom.util.StringUtil;
  *
  */
 public class ObjectMapper {
-	private MappingHandler handler = new DefaultMappingHandler();
-	
-	public void setMappingHandler(MappingHandler handler){
-		this.handler = handler;
-	}
 	
 	public <T> T readValue(ResultSet resultSet, Class<T> classType){
-		List<T> resultList = readValueAsList(resultSet, classType);
+		return readValue(resultSet, classType, new DefaultMappingHandler(resultSet));
+	}
+	
+	public <T> T readValue(ResultSet resultSet, Class<T> classType, MappingHandler handler){
+		List<T> resultList = readValueAsList(resultSet, classType, handler);
 		
 		try{
 			return resultList.get(0);
@@ -33,6 +33,11 @@ public class ObjectMapper {
 	}
 	
 	public <T> List<T> readValueAsList(ResultSet resultSet, Class<T> classType){
+		return this.readValueAsList(resultSet, classType, new DefaultMappingHandler(resultSet));
+	}
+	
+	
+	public <T> List<T> readValueAsList(ResultSet resultSet, Class<T> classType, MappingHandler handler){
 		List<T> resultList = new ArrayList<>();
 		
 		try{
@@ -46,9 +51,9 @@ public class ObjectMapper {
 				
 			//아닌 경우
 			}else{
+
 				while(resultSet.next()){
-					T instance = newInstance(classType);
-					setupInstance(instance, resultSet, classType);
+					T instance = newInstance(resultSet, classType, handler);
 					
 					resultList.add(instance);
 				}
@@ -62,11 +67,39 @@ public class ObjectMapper {
 		return resultList;
 	}
 	
-	protected <T> T newInstance(Class<T> classType){
+	
+	protected <T> T newInstance(ResultSet resultSet, Class<?> classType, MappingHandler handler){
 		try{
-			T instance;
+			@SuppressWarnings("unchecked")
+			T instance = (T)classType.newInstance();
 			
-			instance = classType.newInstance();
+			try{
+				List<String> columnNames = handler.getColumns();
+				
+				for(String column : columnNames){
+					Object value = resultSet.getValue(column);
+					String memberName = handler.convert(column);
+					//컬럴명에 해당하는 setter메서드를 찾음.
+					//callSetter(instance, memberName, value);	<- setter 메서드를 이용하던 경우
+					insertValueToField(instance, memberName, value);
+				}
+				
+				if(handler.hasChild()){
+					List<MappingHandler> childHandlers = handler.getChildMappingHandlers();
+					for(MappingHandler childHandler : childHandlers){
+						String nameId = childHandler.getId();
+						Class<?> childClassType = Class.forName(childHandler.getType());
+						Object childInstance = newInstance(resultSet, childClassType, childHandler);
+						
+						//callSetter(instance, StringUtil.toCamelCaseSimple(nameId), childInstance);	<- setter 메서드를 이용하던 경우
+						insertValueToField(instance, nameId, childInstance);
+					}
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace(System.out);
+				throw new ObjectMapperException("Error mapping object with SPARQL ResultSet.");
+			}
 			
 			return instance;
 			
@@ -94,48 +127,35 @@ public class ObjectMapper {
 			throw new ObjectMapperException("Error creating literal instance. " + e.getMessage());
 		}
 	}
-	/**
-	 * 인자로 전달한 instance에 resultSet의 현재 row의 속성(column) 값들을 매핑하고 반환한다. 
-	 * 인자로 전달한 instance와 반환하는 instance는 동일한 객체이다.
-	 * @param instance
-	 * @param resultSet
-	 * @param classType. instance의 타입.
-	 * @return T. 인자로 전달한 instance가 반환된다.
-	 */
-	protected <T> T setupInstance(T instance, ResultSet resultSet, Class<T> classType) {
-				
+	
+	public void callSetter(Object instance, String name, Object param) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Class<?> classType = instance.getClass();
 		try{
-			List<String> columnNames = resultSet.getColumns();
-			
-			for(String column : columnNames){
-				Object value = resultSet.getValue(column);
-				
-				//컬럴명에 해당하는 setter메서드를 찾음.
-				Method method = classType.getMethod(
-								"set" + handler.convert(column),		//DefaultMappingHandler에 의해 컬럼명이 변경됨. 기본값은 맨 앞글자만 대분자로 바꿈.
-								value.getClass());
-				
-				method.invoke(instance, value);							//메서드 호출. 파라미터 : 인스턴스, 파라미터
-			}
-			
+			//종종 파라미터가 없는 경우가 있다. 예로들어 OPTIONAL 문법을 사용할 경우.
+			Class<?> paramType = param.getClass();
 		}catch(Exception e){
-			e.printStackTrace(System.out);
-			throw new ObjectMapperException("Error mapping object with SPARQL ResultSet.");
+			return;
 		}
 		
-		return instance;
+		Method method = classType.getMethod(
+				"set" + name,		//DefaultMappingHandler에 의해 컬럼명이 변경됨. 기본값은 맨 앞글자만 대분자로 바꿈.
+				param.getClass());
+		
+		method.invoke(instance, param);							//메서드 호출. 파라미터 : 인스턴스, 파라미터
+	}
+	
+	public void insertValueToField(Object instance, String name, Object param) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		//종종 파라미터가 없는 경우가 있다. 예로들어 OPTIONAL을 사용하면 그렇다.
+		if(param == null){
+			return;
+		}
+		
+		Class<?> classType = instance.getClass();
+		
+		Field field = classType.getDeclaredField(name);
+		field.setAccessible(true);
+		field.set(instance, param);
+		field.setAccessible(false);
 	}
 }
 
-/**
- * 기본 매핑 헨들러는 인자로 전달받은 컬럼명을 그대로 반환한다.
- * 즉 클래스의 필드명과 SPARQL 쿼리 결과의 컬럼명이 동일하면 매핑한다.
- * @author kwSeo
- *
- */
-class DefaultMappingHandler implements MappingHandler{
-	@Override
-	public String convert(String columnName){
-		return StringUtil.toCamelCaseSimple(columnName);
-	}
-}

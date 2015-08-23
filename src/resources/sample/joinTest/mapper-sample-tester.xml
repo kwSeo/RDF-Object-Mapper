@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "mapper-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/mapper-config.dtd">
+
+<mapper namespace="team.afgm.test.tester">
+	<resultMap type="team.afgm.bean.JoinTester" id="joinTesterMap">
+		<result column="integerData" field="integerValue"/>
+		<result column="doubleData" field="doubleValue"/>
+		<result column="longData" field="longValue"/>
+		<result column="floatData" field="floatValue"/>
+		<result column="stringData" field="stringValue"/>
+		
+		<relation type="team.afgm.bean.SubJoinTester" id="subJoinTester">
+			<result column="byteData" field="byteValue"/>
+			<result column="shortData" field="shortValue"/>
+			<result column="booleanData" field="booleanValue"/>
+		</relation>
+	</resultMap>
+
+	<select id="selectTesters" resultType="team.afgm.bean.Tester">
+		SELECT ?byteValue ?shortValue ?booleanValue ?integerValue ?longValue ?floatValue ?doubleValue ?stringValue 
+		WHERE {
+			?x	test:byteData ?byteValue;
+				test:shortData ?shortValue;
+				test:booleanData ?booleanValue;
+				test:intData ?integerValue;
+				test:longData ?longValue;
+				test:floatData ?floatValue;
+				test:doubleData ?doubleValue;
+				test:stringData ?stringValue.
+		}
+	</select>
+	
+	<select id="selectPrimitiveTesters" resultType="team.afgm.bean.PrimitiveTester">
+		SELECT ?byteValue ?shortValue ?booleanValue ?integerValue ?longValue ?floatValue ?doubleValue ?stringValue 
+		WHERE {
+			?x	test:byteData ?byteValue;
+				test:shortData ?shortValue;
+				test:booleanData ?booleanValue;
+				test:intData ?integerValue;
+				test:longData ?longValue;
+				test:floatData ?floatValue;
+				test:doubleData ?doubleValue;
+				test:stringData ?stringValue.
+		}
+	</select>
+
+	<select id="selectJoinTesters" resultType="joinTesterMap">
+		SELECT ?byteData ?shortData ?booleanData ?integerData ?longData ?floatData ?doubleData ?stringData 
+		WHERE {
+			?x	test:byteData ?byteData;
+				test:shortData ?shortData;
+				test:booleanData ?booleanData;
+				test:intData ?integerData;
+				test:longData ?longData;
+				test:floatData ?floatData;
+				test:doubleData ?doubleData;
+				test:stringData ?stringData.
+		}
+	</select>
+</mapper>	

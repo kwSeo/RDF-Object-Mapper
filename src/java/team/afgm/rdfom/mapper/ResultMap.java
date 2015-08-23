@@ -12,11 +12,13 @@ public class ResultMap implements Comparable<ResultMap> {
 	private String id;
 	private String type;
 	private List<Result> results;
+	private List<ResultMap> childResultMap;
 	
 	public ResultMap(){
 		this.id = "";
 		this.type = "";
 		this.results = new ArrayList<>();
+		this.childResultMap = new ArrayList<>();
 	}
 	
 	public String getId() {
@@ -43,6 +45,14 @@ public class ResultMap implements Comparable<ResultMap> {
 		this.results = results;
 	}
 
+	public void setChildResultMap(List<ResultMap> childResultMap){
+		this.childResultMap = childResultMap;
+	}
+	
+	public List<ResultMap> getChildResultMap(){
+		return childResultMap;
+	}
+	
 	@Override
 	public int compareTo(ResultMap o) {
 		return this.id.compareTo(o.getId());

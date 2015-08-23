@@ -22,7 +22,8 @@ public class StringUtil {
 			for(Method method : methods){
 				if(method.getName().matches("^get(.)*") && !method.getName().equals("getClass")){
 					Object value = method.invoke(obj);
-					sb.append(value).append(", ");
+					sb.append(method.getName()).append(" : ")
+						.append(value).append(", ");
 				}
 			}
 			

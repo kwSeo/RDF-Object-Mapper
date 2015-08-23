@@ -6,13 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team.afgm.rdfom.cache.CacheManager;
 import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.endpoint.EndpointProcessor;
 import team.afgm.rdfom.mapper.Ask;
 import team.afgm.rdfom.mapper.MapperConfig;
-import team.afgm.rdfom.mapper.Result;
 import team.afgm.rdfom.mapper.ResultMap;
 import team.afgm.rdfom.mapper.Select;
+import team.afgm.rdfom.objectmapper.DefaultMappingHandler;
+import team.afgm.rdfom.objectmapper.MappingHandler;
 import team.afgm.rdfom.objectmapper.ObjectMapper;
 import team.afgm.rdfom.objectmapper.ResultMapHandler;
 import team.afgm.rdfom.sparql.ResultSet;
@@ -65,6 +67,12 @@ public class MappingSessionImpl implements MappingSession{
 	
 	@Override
 	public <T> List<T> selectList(String id, Map<String, Object> param) {
+		@SuppressWarnings("unchecked")
+		List<T> cachedValues = (List<T>)CacheManager.get(id);
+		if(cachedValues != null){
+			return cachedValues;
+		}
+		
 		String[] splitedId;
 		String namespace;
 		String realId;
@@ -92,20 +100,23 @@ public class MappingSessionImpl implements MappingSession{
 		}
 
 		try{
+			ResultSet resultSet = endpointProcessor.executeSelect(stmt.getQuery());
+			
 			/*
 			 * 지정된 ResultType이 ResultMap이냐 아니냐에 따라서 다른 ObjectMapper가 생성될 것있다. 
 			 */
-			ObjectMapper mapper;
+			ObjectMapper mapper = new ObjectMapper();
 			
 			String resultMapId = select.getResultType();
 			String resultType;
+			MappingHandler handler;
 			if(isResultMap(namespace, resultMapId)){
 				ResultMap resultMap = mapperConfigMap.get(namespace).findResultMap(resultMapId);
 				resultType = resultMap.getType();
-				mapper = createObjectMapper(resultMap);
+				handler = new ResultMapHandler(resultMap);
 			}else{
 				resultType = resultMapId;
-				mapper = createObjectMapper();
+				handler = new DefaultMappingHandler(resultSet);
 			}
 
 			Class<T> classType;
@@ -119,9 +130,11 @@ public class MappingSessionImpl implements MappingSession{
 				classType = (Class<T>)Class.forName("java.lang." + resultType);
 			}
 			
-			ResultSet resultSet = endpointProcessor.executeSelect(stmt.getQuery());
+			List<T> resultValues = mapper.readValueAsList(resultSet, classType, handler);	//반환
 			
-			return mapper.readValueAsList(resultSet, classType);	//반환
+			CacheManager.put(id, resultValues);
+			
+			return resultValues;
 			
 		}catch(Exception e){
 			e.printStackTrace(System.out);
@@ -240,21 +253,4 @@ public class MappingSessionImpl implements MappingSession{
 		
 		return map;
 	}
-	
-	protected ObjectMapper createObjectMapper(){
-		return createObjectMapper(null);
-	}
-	
-	protected ObjectMapper createObjectMapper(ResultMap resultMap){
-		ObjectMapper mapper = new ObjectMapper();
-		
-		if(resultMap != null){
-			List<Result> resultList = resultMap.getResults();
-			mapper.setMappingHandler(new ResultMapHandler(resultList));
-		}
-		
-		return mapper;
-	}
-	
-	
 }
