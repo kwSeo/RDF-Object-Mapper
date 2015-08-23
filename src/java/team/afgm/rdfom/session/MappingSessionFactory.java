@@ -6,6 +6,7 @@ import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.context.Endpoint;
 import team.afgm.rdfom.endpoint.EndpointProcessor;
 import team.afgm.rdfom.endpoint.FileEndpointProcessor;
+import team.afgm.rdfom.endpoint.URLEndpointProcessor;
 import team.afgm.rdfom.mapper.MapperConfig;
 
 /**
@@ -37,7 +38,7 @@ public class MappingSessionFactory {
 			processer = new FileEndpointProcessor(endpoint.getProperty().get(0).getValue());
 			break;
 		case ENDPOINT_TYPE_URL:
-			processer = new FileEndpointProcessor(endpoint.getProperty().get(0).getValue());
+			processer = new URLEndpointProcessor(endpoint.getProperty().get(0).getValue());
 			break;
 		default:
 			throw new RuntimeException("Error Endpoint Type.");

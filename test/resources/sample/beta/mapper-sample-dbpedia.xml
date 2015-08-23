@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "mapper-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/mapper-config.dtd">
+
+<mapper namespace="team.afgm.beta.dbpedia.test">
+	<select id="selectConcept" resultType="String">
+		select distinct ?concept where {[] a ?concept} LIMIT 100
+	</select>
+</mapper>	
+	

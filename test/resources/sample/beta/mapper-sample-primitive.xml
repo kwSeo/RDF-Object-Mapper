@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "mapper-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/mapper-config.dtd">
+
+<mapper namespace="team.afgm.beta.test">
+	<select id="selectInt" resultType="int">
+		select ?value
+		where {
+			?x test:intData ?value.
+		}
+	</select>
+	<select id="selectDoubleWithParam" resultType="double">
+		select ?value
+		where {
+			?x test:stringData #{stringData};
+			   test:doubleData ?value.
+		}
+	</select>
+	<select id="selectByteWithParam" resultType="byte">
+		select ?value
+		where {
+			?x  test:intData #{intData};
+				test:byteData ?value.
+		}
+	</select>
+		<select id="selectShort" resultType="short">
+		select ?value
+		where {
+			?x test:shortData ?value.
+		}
+	</select>
+		<select id="selectLong" resultType="long">
+		select ?value
+		where {
+			?x test:longData ?value.
+		}
+	</select>
+		<select id="selectBoolean" resultType="boolean">
+		select ?value
+		where {
+			?x test:booleanData ?value.
+		}
+	</select>
+		<select id="selectString" resultType="String">
+		select ?value
+		where {
+			?x test:stringData ?value.
+		}
+	</select>
+		<select id="selectFloat" resultType="float">
+		select ?value
+		where {
+			?x test:floatData ?value.
+		}
+	</select>
+
+	<select id="selectTester" resultType="tester">
+		SELECT ?byteData ?shortValue ?booleanValue ?integerValue ?longValue ?floatValue ?doubleValue ?stringValue 
+		WHERE {
+			?x	test:byteData ?byteValue;
+				test:shortData ?shortValue;
+				test:booleanData ?booleanValue;
+				test:intData ?integerValue;
+				test:longData ?longValue;
+				test:floatData ?floatValue;
+				test:doubleData ?doubleValue;
+				test:stringData ?stringValue.
+		}
+	</select>
+	
+	<select id="selectJoinTesters" resultType="joinTesterMap">
+		SELECT ?byteData ?shortData ?booleanData ?integerData ?longData ?floatData ?doubleData ?stringData 
+		WHERE {
+			?x	test:byteData ?byteData;
+				test:shortData ?shortData;
+				test:booleanData ?booleanData;
+				test:intData ?integerData;
+				test:longData ?longData;
+				test:floatData ?floatData;
+				test:doubleData ?doubleData;
+				test:stringData ?stringData.
+		}
+	</select>
+	
+	<resultMap type="team.afgm.bean.JoinTester" id="joinTesterMap">
+		<result column="integerData" field="integerValue"/>
+		<result column="doubleData" field="doubleValue"/>
+		<result column="longData" field="longValue"/>
+		<result column="floatData" field="floatValue"/>
+		<result column="stringData" field="stringValue"/>
+		
+		<relation type="team.afgm.bean.SubJoinTester" id="subJoinTester">
+			<result column="byteData" field="byteValue"/>
+			<result column="shortData" field="shortValue"/>
+			<result column="booleanData" field="booleanValue"/>
+		</relation>
+	</resultMap>
+</mapper>	
+	

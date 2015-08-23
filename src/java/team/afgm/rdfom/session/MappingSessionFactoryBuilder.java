@@ -45,11 +45,13 @@ public class MappingSessionFactoryBuilder {
 				MapperConfig mapperConfig = MapperConfigFactory.get().createMapperConfig(mapperInputStream);
 				mapperConfigMap.put(mapperConfig.getNamespace(), mapperConfig);
 			}
-			
+		
 		}catch(Exception e){
 			e.printStackTrace(System.err);
 			throw new FactoryBuildException("MapperConfig Build Failed. " + e.getMessage());
 		}
+		
+		initCache(contextConfig.getCache());
 		
 		return new MappingSessionFactory(contextConfig, mapperConfigMap);
 	}

@@ -15,6 +15,7 @@ import team.afgm.rdfom.mapper.MapperConfig;
 import team.afgm.rdfom.mapper.ResultMap;
 import team.afgm.rdfom.mapper.Select;
 import team.afgm.rdfom.objectmapper.DefaultMappingHandler;
+import team.afgm.rdfom.objectmapper.LiteralType;
 import team.afgm.rdfom.objectmapper.MappingHandler;
 import team.afgm.rdfom.objectmapper.ObjectMapper;
 import team.afgm.rdfom.objectmapper.ResultMapHandler;
@@ -64,6 +65,16 @@ public class MappingSessionImpl implements MappingSession{
 	}
 	
 	@Override
+	public <T> List<T> selectList(String id) {
+		return this.selectList(id, null);
+	}
+	
+	@Override
+	public <T> List<T> selectList(String id, Object param){
+		return this.selectList(id, toMap(param));
+	}
+	
+	@Override
 	public <T> List<T> selectList(String id, Map<String, Object> param) {
 		@SuppressWarnings("unchecked")
 		List<T> cachedValues = (List<T>)CacheManager.get(id);
@@ -85,7 +96,9 @@ public class MappingSessionImpl implements MappingSession{
 		
 
 		Select select = findSelect(namespace, realId);
-
+		if(select == null)
+			throw new RuntimeException("Error finding select. " + id);
+		
 		SparqlStatement stmt;
 		try{
 			stmt = SparqlStatementBuilder.newInstance(select.getQuery(), 
@@ -125,7 +138,7 @@ public class MappingSessionImpl implements MappingSession{
 				/*
 				 * ResultMap도 아니고 지정된 클래스가 있는 것도 아니다. 그렇다면 java.lang에 존재하는 클래스인지 확인한다.
 				 */
-				classType = (Class<T>)Class.forName("java.lang." + resultType);
+				classType = (Class<T>)LiteralType.getClassType(resultType);
 			}
 			
 			List<T> resultValues = mapper.readValueAsList(resultSet, classType, handler);	//반환
@@ -140,15 +153,6 @@ public class MappingSessionImpl implements MappingSession{
 		}
 	}
 
-	@Override
-	public <T> List<T> selectList(String id, Object param){
-		return this.selectList(id, toMap(param));
-	}
-	
-	@Override
-	public <T> List<T> selectList(String id) {
-		return this.selectList(id, null);
-	}
 	
 
 	@Override
@@ -228,7 +232,7 @@ public class MappingSessionImpl implements MappingSession{
 		}
 	}
 
-	protected <T> Map<String, ?> toMap(T obj){
+	protected <T> Map<String, Object> toMap(T obj){
 		Map<String, Object> map = new HashMap<>();
 		
 		Class<?> classInfo = obj.getClass();

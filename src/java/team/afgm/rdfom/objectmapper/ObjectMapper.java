@@ -151,11 +151,17 @@ public class ObjectMapper {
 		}
 		
 		Class<?> classType = instance.getClass();
-		
-		Field field = classType.getDeclaredField(name);
-		field.setAccessible(true);
-		field.set(instance, param);
-		field.setAccessible(false);
+		try{
+			Field field = classType.getDeclaredField(name);
+			field.setAccessible(true);
+			field.set(instance, param);
+			field.setAccessible(false);
+			
+		}catch(NoSuchFieldException e){
+			//해당하는 필드를 찾을 수 없으면 그냥 넘어간다.
+			return;
+		}
+
 	}
 }
 
