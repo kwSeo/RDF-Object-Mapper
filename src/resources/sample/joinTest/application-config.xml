@@ -26,4 +26,6 @@
 		<mapper resource="sample/joinTest/mapper-sample-join.xml"/>
 		<mapper resource="sample/joinTest/mapper-sample-tester.xml"/>
 	</mappers>
+	
+	<cache type="LRU" />
 </configuration>

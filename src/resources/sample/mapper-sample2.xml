@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-	SYSTEM "/home/kwseo/git/RDF-Object-Mapper/src/resources/sample/mapper-prototype.dtd">
+	PUBLIC "mapper-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/mapper-config.dtd">
 
 <mapper namespace="afgm.seo.test2">
 	<resultMap id="resultMapOne" type="team.afgm.rdfom.mappingsession.test.Person">

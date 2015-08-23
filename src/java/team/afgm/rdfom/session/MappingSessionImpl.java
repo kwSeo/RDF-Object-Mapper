@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team.afgm.rdfom.cache.CacheManager;
 import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.endpoint.EndpointProcessor;
 import team.afgm.rdfom.mapper.Ask;
@@ -66,6 +67,12 @@ public class MappingSessionImpl implements MappingSession{
 	
 	@Override
 	public <T> List<T> selectList(String id, Map<String, Object> param) {
+		@SuppressWarnings("unchecked")
+		List<T> cachedValues = (List<T>)CacheManager.get(id);
+		if(cachedValues != null){
+			return cachedValues;
+		}
+		
 		String[] splitedId;
 		String namespace;
 		String realId;
@@ -123,7 +130,11 @@ public class MappingSessionImpl implements MappingSession{
 				classType = (Class<T>)Class.forName("java.lang." + resultType);
 			}
 			
-			return mapper.readValueAsList(resultSet, classType, handler);	//반환
+			List<T> resultValues = mapper.readValueAsList(resultSet, classType, handler);	//반환
+			
+			CacheManager.put(id, resultValues);
+			
+			return resultValues;
 			
 		}catch(Exception e){
 			e.printStackTrace(System.out);
