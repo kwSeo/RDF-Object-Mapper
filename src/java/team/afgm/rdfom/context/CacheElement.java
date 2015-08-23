@@ -3,13 +3,15 @@ package team.afgm.rdfom.context;
 public class CacheElement {
 	private String type;
 	private long flushInterval;
+	private int capacity;
 	
 	public CacheElement(){
-		this("FIFO", 84600);
+		this("FIFO", 84600, 1024);
 	}
 	
-	public CacheElement(String type, long flushInterval){
+	public CacheElement(String type, int capacity, long flushInterval){
 		this.type = type;
+		this.capacity = capacity;
 		this.flushInterval = flushInterval;
 	}
 
@@ -28,4 +30,14 @@ public class CacheElement {
 	public void setFlushInterval(long flushInterval) {
 		this.flushInterval = flushInterval;
 	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	
+	
 }

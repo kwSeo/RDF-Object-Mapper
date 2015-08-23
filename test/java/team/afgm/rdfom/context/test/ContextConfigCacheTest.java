@@ -15,5 +15,10 @@ public class ContextConfigCacheTest {
 		CacheElement cacheElement = config.getCache();
 		assertEquals("LRU", cacheElement.getType());
 		assertEquals(2000, cacheElement.getFlushInterval());
+		assertEquals(10, cacheElement.getCapacity());
+		
+		ContextConfig configWithoutCache = ContextConfigFactory.getInstance().createContextConfig("sample/context-config.xml");
+		CacheElement nullCacheElement = configWithoutCache.getCache();
+		assertNull(nullCacheElement);
 	}
 }

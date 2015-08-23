@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import team.afgm.rdfom.cache.CacheManager;
+import team.afgm.rdfom.context.Alias;
 import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.endpoint.EndpointProcessor;
 import team.afgm.rdfom.mapper.Ask;
@@ -23,9 +24,6 @@ import team.afgm.rdfom.sparql.SparqlStatementImpl.SparqlStatementBuilder;
 import team.afgm.rdfom.util.StringUtil;
 
 /**
- * TODO 클래스가 점점 방대해져간다...
- * 아직 ContextConfig이 완성되지 않았기 때문에 완성할 수 없다.
- * MapperConfig 리스트가 아니라 맵으로 관리하자.
  * @author kwSeo
  *
  */
@@ -112,10 +110,10 @@ public class MappingSessionImpl implements MappingSession{
 			MappingHandler handler;
 			if(isResultMap(namespace, resultMapId)){
 				ResultMap resultMap = mapperConfigMap.get(namespace).findResultMap(resultMapId);
-				resultType = resultMap.getType();
+				resultType = getResultType(resultMap.getType());
 				handler = new ResultMapHandler(resultMap);
 			}else{
-				resultType = resultMapId;
+				resultType = getResultType(resultMapId);
 				handler = new DefaultMappingHandler(resultSet);
 			}
 
@@ -251,5 +249,16 @@ public class MappingSessionImpl implements MappingSession{
 		}
 		
 		return map;
+	}
+	
+	protected String getResultType(String id){
+		String resultType;
+		Alias alias = contextConfig.findAlias(id);
+		if(alias != null)
+			resultType = alias.getType();
+		else
+			resultType = id;
+		
+		return resultType;
 	}
 }

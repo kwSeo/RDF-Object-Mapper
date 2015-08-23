@@ -29,5 +29,5 @@
 		<alias id="testAlias2" type="team.afgm.rdfom.mappingsession.Person"/>
 	</aliases>
 	
-	<cache type="LRU" flushInterval="2000"></cache>
+	<cache type="LRU" flushInterval="2000" capacity="10"></cache>
 </configuration>
