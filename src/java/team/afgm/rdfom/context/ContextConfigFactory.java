@@ -22,7 +22,8 @@ public class ContextConfigFactory {
 					EndpointsParser.parse(xml),
 					NamespacesParser.parse(xml),
 					MapperResourcesParser.parse(xml),
-					AliasesParser.parse(xml)
+					AliasesParser.parse(xml),
+					CacheElementParser.parse(xml)
 				);
 	}
 	
@@ -32,7 +33,8 @@ public class ContextConfigFactory {
 					EndpointsParser.parse(xml),
 					NamespacesParser.parse(xml),
 					MapperResourcesParser.parse(xml),
-					AliasesParser.parse(xml)
+					AliasesParser.parse(xml),
+					CacheElementParser.parse(xml)
 				);
 	}
 

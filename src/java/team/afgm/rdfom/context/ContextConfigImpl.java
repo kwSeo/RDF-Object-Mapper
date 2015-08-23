@@ -5,13 +5,15 @@ public class ContextConfigImpl implements ContextConfig {
 	private Namespaces namespaces;
 	private MapperResources mapperResources;
 	private Aliases aliases;
+	private CacheElement cacheElement;
 	
 
-	public ContextConfigImpl(Endpoints endpoints, Namespaces namespaces, MapperResources mapperResources, Aliases aliases) {
+	public ContextConfigImpl(Endpoints endpoints, Namespaces namespaces, MapperResources mapperResources, Aliases aliases, CacheElement cacheElement) {
 		this.endpoints = endpoints;
 		this.namespaces = namespaces;
 		this.mapperResources = mapperResources;
 		this.aliases = aliases;
+		this.cacheElement = cacheElement;
 	}
 
 	@Override
@@ -69,4 +71,11 @@ public class ContextConfigImpl implements ContextConfig {
 	public Alias findAlias(String id) {
 		return aliases.findAlias(id);
 	}
+
+	@Override
+	public CacheElement getCache() {
+		return cacheElement;
+	}
+	
+	
 }

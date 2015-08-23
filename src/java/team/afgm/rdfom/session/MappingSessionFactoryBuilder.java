@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team.afgm.rdfom.cache.CacheManager;
+import team.afgm.rdfom.context.CacheElement;
 import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.context.ContextConfigFactory;
 import team.afgm.rdfom.context.MapperResource;
@@ -50,5 +52,18 @@ public class MappingSessionFactoryBuilder {
 		}
 		
 		return new MappingSessionFactory(contextConfig, mapperConfigMap);
+	}
+	
+	protected static void initCache(CacheElement cacheElement){
+		if(cacheElement == null)
+			return;
+		
+		String type = cacheElement.getType();
+		long flushInterval = cacheElement.getFlushInterval();
+		int capacity = cacheElement.getCapacity();
+		
+		CacheManager.setEnable(true);	//기본값은 false이다.
+		CacheManager.setCache(type, capacity, flushInterval);
+		
 	}
 }
