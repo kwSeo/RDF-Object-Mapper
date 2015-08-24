@@ -44,6 +44,7 @@ public class LiteralType {
 		map.put("Byte", Byte.class);
 		map.put("Character", Character.class);
 		map.put("Short", Short.class);
+		map.put("Integer", Integer.class);
 		map.put("Long", Long.class);
 		map.put("Float", Float.class);
 		map.put("Double", Double.class);
