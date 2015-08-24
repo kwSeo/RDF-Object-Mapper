@@ -1,7 +1,24 @@
+/*
+RDF-Object Mapping Library is a Java library 
+for mapping SPARQL results to Java object(JavaBean, POJO etc.).
+Copyright (C) 2015  KyeongWon Seo(kwSeo), JuHyeon Moon(jhMoon)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>
+*/
+
 package team.afgm.rdfom.sparql;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -16,7 +33,7 @@ import javax.xml.bind.annotation.XmlValue;
  * 그래서 본 클래스는 SPARQL 결과값 표준에 맞게 설계되어 있으며 XML 결과값으로부터 바인딩된다.<br><br>
  * 참고 : <a href="http://www.w3.org/TR/rdf-sparql-XMLres/">SPARQL Query Results XML Format (Second Edition)</a>
  * 
- * @author 서경원
+ * @author kwSeo
  *
  */
 @XmlRootElement(name="sparql", namespace="http://www.w3.org/2005/sparql-results#")
