@@ -1,3 +1,22 @@
+/*
+RDF-Object Mapping Library is a Java library 
+for mapping SPARQL results to Java object(JavaBean, POJO etc.).
+Copyright (C) 2015  KyeongWon Seo(kwSeo), JuHyeon Moon(jhMoon)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>
+*/
+
 package team.afgm.rdfom.session;
 
 import java.util.Map;
@@ -6,6 +25,7 @@ import team.afgm.rdfom.context.ContextConfig;
 import team.afgm.rdfom.context.Endpoint;
 import team.afgm.rdfom.endpoint.EndpointProcessor;
 import team.afgm.rdfom.endpoint.FileEndpointProcessor;
+import team.afgm.rdfom.endpoint.URLEndpointProcessor;
 import team.afgm.rdfom.mapper.MapperConfig;
 
 /**
@@ -37,7 +57,7 @@ public class MappingSessionFactory {
 			processer = new FileEndpointProcessor(endpoint.getProperty().get(0).getValue());
 			break;
 		case ENDPOINT_TYPE_URL:
-			processer = new FileEndpointProcessor(endpoint.getProperty().get(0).getValue());
+			processer = new URLEndpointProcessor(endpoint.getProperty().get(0).getValue());
 			break;
 		default:
 			throw new RuntimeException("Error Endpoint Type.");

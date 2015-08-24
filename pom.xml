@@ -3,8 +3,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>RDF-object-mapper</groupId>
 	<artifactId>RDF-object-mapper</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-
+	<version>1.0.0</version>
+	<url>https://github.com/kwSeo/RDF-Object-Mapper</url>
+	
+	<contributors>
+		<contributor>
+			<name>kwSeo(KyeongWon Seo)</name>
+			<email>tkruddnjs1@naver.com</email>
+			<url>http://kwseo.github.io</url>
+		</contributor>
+		<contributor>
+			<name>jhMoon(JuHyeon Moon or MoonJH)</name>
+			<email>amirune@naver.com</email>
+			<url>https://github.com/MoonJH</url>
+		</contributor>
+	</contributors>
+	
 	<build>
 		<directory>target</directory>
 		<outputDirectory>target/classes</outputDirectory>

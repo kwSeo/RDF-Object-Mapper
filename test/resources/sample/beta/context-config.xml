@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+	PUBLIC "context-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/context-config.dtd">
+	
+<configuration>
+	<endpoints>
+		<endpoint id="testFile" type="file">
+			<property name="path">sample/beta/test1.rdf</property>			
+		</endpoint>
+
+		<endpoint id="dbpedia" type="url">
+			<property name="url">http://ko.dbpedia.org/sparql</property>
+		</endpoint>
+	</endpoints>
+	
+	<namespaces>
+		<namespace prefix="rdf" url="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+		<namespace prefix="test" url="http://afgm.org/test#"/>
+		<namespace prefix="xsd" url="http://www.w3.org/2001/XMLSchema#"/>
+	</namespaces>
+	
+	<mappers>
+		<mapper resource="sample/beta/mapper-sample-primitive.xml"/>
+		<mapper resource="sample/beta/mapper-sample-dbpedia.xml"/>
+	</mappers>
+	
+	<aliases>
+		<alias type="team.afgm.bean.Tester" id="tester"/>
+	</aliases>
+	
+	<cache type="LRU" capacity="3" flushInterval="100000"/>
+</configuration>

@@ -1,3 +1,22 @@
+/*
+RDF-Object Mapping Library is a Java library 
+for mapping SPARQL results to Java object(JavaBean, POJO etc.).
+Copyright (C) 2015  KyeongWon Seo(kwSeo), JuHyeon Moon(jhMoon)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>
+*/
+
 package team.afgm.rdfom.session;
 
 import java.lang.reflect.Field;
@@ -15,6 +34,7 @@ import team.afgm.rdfom.mapper.MapperConfig;
 import team.afgm.rdfom.mapper.ResultMap;
 import team.afgm.rdfom.mapper.Select;
 import team.afgm.rdfom.objectmapper.DefaultMappingHandler;
+import team.afgm.rdfom.objectmapper.LiteralType;
 import team.afgm.rdfom.objectmapper.MappingHandler;
 import team.afgm.rdfom.objectmapper.ObjectMapper;
 import team.afgm.rdfom.objectmapper.ResultMapHandler;
@@ -64,6 +84,16 @@ public class MappingSessionImpl implements MappingSession{
 	}
 	
 	@Override
+	public <T> List<T> selectList(String id) {
+		return this.selectList(id, null);
+	}
+	
+	@Override
+	public <T> List<T> selectList(String id, Object param){
+		return this.selectList(id, toMap(param));
+	}
+	
+	@Override
 	public <T> List<T> selectList(String id, Map<String, Object> param) {
 		@SuppressWarnings("unchecked")
 		List<T> cachedValues = (List<T>)CacheManager.get(id);
@@ -85,7 +115,9 @@ public class MappingSessionImpl implements MappingSession{
 		
 
 		Select select = findSelect(namespace, realId);
-
+		if(select == null)
+			throw new RuntimeException("Error finding select. " + id);
+		
 		SparqlStatement stmt;
 		try{
 			stmt = SparqlStatementBuilder.newInstance(select.getQuery(), 
@@ -125,7 +157,7 @@ public class MappingSessionImpl implements MappingSession{
 				/*
 				 * ResultMap도 아니고 지정된 클래스가 있는 것도 아니다. 그렇다면 java.lang에 존재하는 클래스인지 확인한다.
 				 */
-				classType = (Class<T>)Class.forName("java.lang." + resultType);
+				classType = (Class<T>)LiteralType.getClassType(resultType);
 			}
 			
 			List<T> resultValues = mapper.readValueAsList(resultSet, classType, handler);	//반환
@@ -140,15 +172,6 @@ public class MappingSessionImpl implements MappingSession{
 		}
 	}
 
-	@Override
-	public <T> List<T> selectList(String id, Object param){
-		return this.selectList(id, toMap(param));
-	}
-	
-	@Override
-	public <T> List<T> selectList(String id) {
-		return this.selectList(id, null);
-	}
 	
 
 	@Override
@@ -228,7 +251,7 @@ public class MappingSessionImpl implements MappingSession{
 		}
 	}
 
-	protected <T> Map<String, ?> toMap(T obj){
+	protected <T> Map<String, Object> toMap(T obj){
 		Map<String, Object> map = new HashMap<>();
 		
 		Class<?> classInfo = obj.getClass();
