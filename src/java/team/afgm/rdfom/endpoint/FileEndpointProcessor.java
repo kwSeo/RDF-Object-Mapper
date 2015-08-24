@@ -71,7 +71,7 @@ public class FileEndpointProcessor extends EndpointProcessor{
 			String xmlStr = ResultSetFormatter.asXMLString(resultSet);
 			
 			return xmlStr;
-
+			
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
 			throw new QueryExecutionException("Error executing SELECT.");
