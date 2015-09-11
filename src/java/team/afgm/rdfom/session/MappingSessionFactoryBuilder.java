@@ -39,10 +39,10 @@ import team.afgm.rdfom.session.exception.FactoryBuildException;
  *
  */
 public class MappingSessionFactoryBuilder {
-	protected static ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+	private static StreamMaker streamMaker = new StreamMaker(); 
 	
 	public static MappingSessionFactory build(String contextConfigPath){
-		return build(classLoader.getResourceAsStream(contextConfigPath));
+		return build(streamMaker.getResourceAsStream(contextConfigPath));
 	}
 	
 	public static MappingSessionFactory build(InputStream inputStream){
@@ -60,7 +60,7 @@ public class MappingSessionFactoryBuilder {
 			List<MapperResource> resourceList = contextConfig.getMapperResources().getMapperResourceList();
 			for(MapperResource mapperResource : resourceList){
 				String resourcePath = mapperResource.getResource();
-				InputStream mapperInputStream = classLoader.getResourceAsStream(resourcePath);
+				InputStream mapperInputStream = streamMaker.getResourceAsStream(resourcePath);
 				MapperConfig mapperConfig = MapperConfigFactory.get().createMapperConfig(mapperInputStream);
 				mapperConfigMap.put(mapperConfig.getNamespace(), mapperConfig);
 			}
