@@ -31,13 +31,13 @@ public class ResultMap implements Comparable<ResultMap> {
 	private String id;
 	private String type;
 	private List<Result> results;
-	private List<ResultMap> childResultMap;
+	private List<Join> joins;
 	
 	public ResultMap(){
 		this.id = "";
 		this.type = "";
 		this.results = new ArrayList<>();
-		this.childResultMap = new ArrayList<>();
+		this.joins = new ArrayList<>();
 	}
 	
 	public String getId() {
@@ -64,12 +64,12 @@ public class ResultMap implements Comparable<ResultMap> {
 		this.results = results;
 	}
 
-	public void setChildResultMap(List<ResultMap> childResultMap){
-		this.childResultMap = childResultMap;
+	public void setJoinList(List<Join> joinList){
+		this.joins = joinList;
 	}
 	
-	public List<ResultMap> getChildResultMap(){
-		return childResultMap;
+	public List<Join> getJoinList(){
+		return joins;
 	}
 	
 	@Override

@@ -56,17 +56,12 @@ public class ResultMapHandler implements MappingHandler{
 
 	@Override
 	public boolean hasChild() {
-		return !(resultMap != null && resultMap.getChildResultMap().isEmpty());
+		return false;
 	}
 
 	@Override
 	public List<MappingHandler> getChildMappingHandlers() {
-		List<ResultMap> childResultMaps = resultMap.getChildResultMap();
-		List<MappingHandler> childHandlers = new ArrayList<>(childResultMaps.size());
-		for(ResultMap childResultMap : childResultMaps){
-			childHandlers.add(new ResultMapHandler(childResultMap));
-		}
-		return childHandlers;
+		return null;
 	}
 
 	@Override

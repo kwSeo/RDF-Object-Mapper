@@ -1,11 +1,10 @@
 package team.afgm.rdfom.mapper.test;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.junit.Test;
 
+import team.afgm.rdfom.mapper.Join;
 import team.afgm.rdfom.mapper.MapperConfig;
 import team.afgm.rdfom.mapper.MapperConfigFactory;
 import team.afgm.rdfom.mapper.Result;
@@ -36,14 +35,18 @@ public class MapperConfigTest {
 			for(Result result : resultMap.getResults())
 				System.out.println(StringUtil.toString(result));
 		}
-		
 	}
 	
+	/*
+	 * join태그 추가 후 테스트
+	 */
 	@Test
-	public void testResultMaps(){
-		MapperConfig mapperConfig = MapperConfigFactory.get().createMapperConfig("sample/joinTest/mapper-sample-join.xml");
-		List<ResultMap> relation = mapperConfig.findResultMap("resultMapJoin").getChildResultMap();
-		assertTrue(relation.size() > 0);
-		System.out.println("Field : " + relation.get(0).getResults().get(0).getField());
+	public void factoryTest2(){
+		MapperConfig config = MapperConfigFactory.get().createMapperConfig("sample/newJoinTest/mapper-sample-tester.xml");
+		for(ResultMap resultMap : config.getResultMaps()){
+			for(Join join : resultMap.getJoinList()){
+				System.out.println(join);
+			}
+		}
 	}
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "context-config-dtd" "http://7ztxqilh.cdn.toastcloud.com/dtd/context-config.dtd">
+<configuration>
+	<endpoints>
+		<endpoint id="testFile3" type="file">
+			<property name="path">sample/newJoinTest/test3.rdf</property>
+		</endpoint>
+	</endpoints>
+	
+	<namespaces>
+		<namespace prefix="hc" url="http://sample.com#"/>
+		<namespace prefix="foaf" url="http://xmlns.com/foaf/0.1/"/>
+		<namespace prefix="vcard" url="http://www.w3.org/2001/vcard-rdf/3.0#"/>
+		<namespace prefix="info" url="http://somewhere/peopleInfo#"/>
+		<namespace prefix="xsd" url="http://www.w3.org/2001/XMLSchema#"/>
+		<namespace prefix="test" url="http://afgm.org/test#"/>
+	</namespaces>
+	
+	<mappers>
+		<mapper resource="sample/newJoinTest/mapper-sample-tester.xml"/>
+	</mappers>
+	
+	<cache type="LRU" />
+</configuration>
