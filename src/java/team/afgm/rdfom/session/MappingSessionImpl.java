@@ -135,22 +135,24 @@ public class MappingSessionImpl implements MappingSession{
 			/*
 			 * 지정된 ResultType이 ResultMap이냐 아니냐에 따라서 다른 ObjectMapper가 생성될 것있다. 
 			 */
-			ObjectMapper mapper = new ObjectMapper();
+			MapperConfig mapperConfig = mapperConfigMap.get(namespace);
+			ObjectMapper mapper = new ObjectMapper(mapperConfig);
 			
 			String resultMapId = select.getResultType();
 			String resultType;
-			MappingHandler handler;
+			String handler;
 			if(isResultMap(namespace, resultMapId)){
-				ResultMap resultMap = mapperConfigMap.get(namespace).findResultMap(resultMapId);
+				ResultMap resultMap = mapperConfig.findResultMap(resultMapId);
 				resultType = getResultType(resultMap.getType());
-				handler = new ResultMapHandler(resultMap);
+				handler = resultMapId;
 			}else{
 				resultType = getResultType(resultMapId);
-				handler = new DefaultMappingHandler(resultSet);
+				handler = null;
 			}
 
 			Class<T> classType;
 			
+			//이부분 alias로 고칠 수 있을 것 같다.
 			try{
 				classType = (Class<T>)Class.forName(resultType);
 			}catch(Exception e){

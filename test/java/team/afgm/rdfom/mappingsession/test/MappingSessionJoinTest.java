@@ -22,7 +22,7 @@ import team.afgm.rdfom.util.StringUtil;
  */
 public class MappingSessionJoinTest {
 	//별도의 테스트 샘플들을 만들어 테스트하였다. 
-	private String configPath = "sample/joinTest/application-config.xml";
+	private String configPath = "sample/newJoinTest/application-config.xml";
 	private MappingSessionFactory factory = MappingSessionFactoryBuilder.build(configPath);
 	
 	/**

@@ -21,11 +21,13 @@ package team.afgm.rdfom.objectmapper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import team.afgm.rdfom.mapper.Join;
+import team.afgm.rdfom.mapper.MapperConfig;
+import team.afgm.rdfom.mapper.Result;
+import team.afgm.rdfom.mapper.ResultMap;
 import team.afgm.rdfom.objectmapper.exception.ObjectMapperException;
 import team.afgm.rdfom.sparql.ResultSet;
 
@@ -34,13 +36,18 @@ import team.afgm.rdfom.sparql.ResultSet;
  *
  */
 public class ObjectMapper {
+	private final MapperConfig mapperConfig;
 	
-	public <T> T readValue(ResultSet resultSet, Class<T> classType){
-		return readValue(resultSet, classType, new DefaultMappingHandler(resultSet));
+	public ObjectMapper(MapperConfig mapperConfig){
+		this.mapperConfig = mapperConfig;
 	}
 	
-	public <T> T readValue(ResultSet resultSet, Class<T> classType, MappingHandler handler){
-		List<T> resultList = readValueAsList(resultSet, classType, handler);
+	public <T> T readValue(ResultSet resultSet, Class<T> classType){
+		return readValue(resultSet, classType, null);
+	}
+	
+	public <T> T readValue(ResultSet resultSet, Class<T> classType, String resultMapId){
+		List<T> resultList = readValueAsList(resultSet, classType, resultMapId);
 		
 		try{
 			return resultList.get(0);
@@ -51,11 +58,11 @@ public class ObjectMapper {
 	}
 	
 	public <T> List<T> readValueAsList(ResultSet resultSet, Class<T> classType){
-		return this.readValueAsList(resultSet, classType, new DefaultMappingHandler(resultSet));
+		return this.readValueAsList(resultSet, classType, null);
 	}
 	
 	
-	public <T> List<T> readValueAsList(ResultSet resultSet, Class<T> classType, MappingHandler handler){
+	public <T> List<T> readValueAsList(ResultSet resultSet, Class<T> classType, String resultMapId){
 		List<T> resultList = new ArrayList<>();
 		
 		try{
@@ -71,7 +78,7 @@ public class ObjectMapper {
 			}else{
 
 				while(resultSet.next()){
-					T instance = newInstance(resultSet, classType, handler);
+					T instance = newInstance(resultSet, classType, resultMapId);
 					
 					resultList.add(instance);
 				}
@@ -86,47 +93,40 @@ public class ObjectMapper {
 	}
 	
 	
-	protected <T> T newInstance(ResultSet resultSet, Class<?> classType, MappingHandler handler){
+	protected <T> T newInstance(ResultSet resultSet, Class<?> classType, String resultMapId){
 		try{
-			@SuppressWarnings("unchecked")
 			T instance = (T)classType.newInstance();
-			
-			try{
-				List<String> columnNames = handler.getColumns();
+
+			if(resultMapId != null){
+				ResultMap resultMap = mapperConfig.findResultMap(resultMapId);
 				
-				for(String column : columnNames){
-					Object value = resultSet.getValue(column);
-					String memberName = handler.convert(column);
-					//컬럴명에 해당하는 setter메서드를 찾음.
-					//callSetter(instance, memberName, value);	<- setter 메서드를 이용하던 경우
-					insertValueToField(instance, memberName, value);
+				for(Result result : resultMap.getResults()){
+					Object value = resultSet.getValue(result.getColumn());
+					setValueToField(instance, result.getField(), value);
 				}
 				
-				if(handler.hasChild()){
-					List<MappingHandler> childHandlers = handler.getChildMappingHandlers();
-					for(MappingHandler childHandler : childHandlers){
-						String nameId = childHandler.getId();
-						Class<?> childClassType = Class.forName(childHandler.getType());
-						Object childInstance = newInstance(resultSet, childClassType, childHandler);
-						
-						//callSetter(instance, StringUtil.toCamelCaseSimple(nameId), childInstance);	<- setter 메서드를 이용하던 경우
-						insertValueToField(instance, nameId, childInstance);
-					}
+				//join태그에 대해서 수행
+				for(Join join : resultMap.getJoinList()){
+					Field field = classType.getDeclaredField(join.getField());
+					T subInstance = newInstance(
+							resultSet, 
+							field.getType(), 
+							join.getResultMapId());				//재귀적 호출
+					setValueToField(instance, join.getField(), subInstance);
 				}
 				
-			}catch(Exception e){
-				e.printStackTrace(System.out);
-				throw new ObjectMapperException("Error mapping object with SPARQL ResultSet.");
+			}else{
+				for(String name : resultSet.getColumns()){
+					Object value = resultSet.getValue(name);
+					setValueToField(instance, name, value);
+				}
 			}
 			
 			return instance;
 			
 		}catch(Exception e){
-			e.printStackTrace(System.out);
-			throw new ObjectMapperException("Error creating instance.");
+			throw new RuntimeException(e.getMessage());
 		}
-		
-		
 	}
 	
 	public <T> T newLiteralInstance(ResultSet resultSet, Class<T> classType){
@@ -146,23 +146,8 @@ public class ObjectMapper {
 		}
 	}
 	
-	public void callSetter(Object instance, String name, Object param) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Class<?> classType = instance.getClass();
-		try{
-			//종종 파라미터가 없는 경우가 있다. 예로들어 OPTIONAL 문법을 사용할 경우.
-			Class<?> paramType = param.getClass();
-		}catch(Exception e){
-			return;
-		}
-		
-		Method method = classType.getMethod(
-				"set" + name,		//DefaultMappingHandler에 의해 컬럼명이 변경됨. 기본값은 맨 앞글자만 대분자로 바꿈.
-				param.getClass());
-		
-		method.invoke(instance, param);							//메서드 호출. 파라미터 : 인스턴스, 파라미터
-	}
-	
-	public void insertValueToField(Object instance, String name, Object param) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+	public void setValueToField(Object instance, String name, Object param) 
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
 		//종종 파라미터가 없는 경우가 있다. 예로들어 OPTIONAL을 사용하면 그렇다.
 		if(param == null){
 			return;

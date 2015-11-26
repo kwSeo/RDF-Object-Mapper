@@ -42,18 +42,6 @@ public class ResultMapParser {
 		for(int i=0 ; i<length ; i++){
 			XMLManager subXml = new XMLManager(list.item(i));
 			ResultMap resultMap = parseResultMap(subXml);
-			
-			NodeList relationList = subXml.getNodeList("relation");
-			int relationLength = relationList.getLength();
-			List<ResultMap> childList = new ArrayList<>();
-			
-			for(int j=0 ; j<relationLength ; j++){
-				XMLManager relationXml = new XMLManager(relationList.item(j));
-				ResultMap relation = parseResultMap(relationXml);	//relation element랑 resultMap element랑 속성이 같음. 재귀적으로 반복
-				childList.add(relation);
-			}
-			
-			resultMap.setChildResultMap(childList);
 			map.put(resultMap.getId(), resultMap);
 		}
 		
@@ -63,11 +51,11 @@ public class ResultMapParser {
 	public static ResultMap parseResultMap(XMLManager xml){
 		ResultMap resultMap = new ResultMap();
 		
-		List<Result> results = parseResults(xml);
-		String id = xml.getString("@id");
-		resultMap.setId(id);
-		resultMap.setResults(results);
+		resultMap.setId(xml.getString("@id"));
 		resultMap.setType(xml.getString("@type"));
+		resultMap.setResults(parseResults(xml));
+		//join 파싱, relation말고 이걸 사용하자.
+		resultMap.setJoinList(parseJoins(xml));
 		
 		return resultMap;
 	}
@@ -87,5 +75,22 @@ public class ResultMapParser {
 		}
 		
 		return results;
+	}
+	
+	public static List<Join> parseJoins(XMLManager xml){
+		List<Join> joins = new ArrayList<>();
+		NodeList list = xml.getNodeList("join");
+		int length = list.getLength();
+		
+		for(int i=0 ; i<length ; i++){
+			XMLManager subXml = new XMLManager(list.item(i));
+			
+			Join join = new Join(
+					subXml.getString("@resultMapId"),
+					subXml.getString("@field"));
+			joins.add(join);
+		}
+		
+		return joins;
 	}
 }
